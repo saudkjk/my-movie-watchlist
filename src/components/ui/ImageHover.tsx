@@ -32,7 +32,7 @@ export const ImageHover = ({
               className={`h-full w-full ${imageClassName}`}
               fill
               src={imageUrl}
-              sizes="(max-width: 480px) 55vw, (max-width: 768px) 40vw, (max-width: 992px) 30vw, (max-width: 1200px) 25vw, (max-width: 1600px) 20vw, 15vw"
+              sizes="(max-width: 480px) 35vw, (max-width: 768px) 30vw, (max-width: 992px) 25vw, (max-width: 1200px) 20vw, (max-width: 1600px) 15vw, 10vw"
               quality={80}
             />
           </div>
