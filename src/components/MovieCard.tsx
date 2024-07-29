@@ -460,9 +460,10 @@ import Link from "next/link";
 type MovieCardProps = {
     userId: string;
     movie: any;
+    isLCP: boolean;
 };
 
-export default async function MovieCard({ movie, userId }: MovieCardProps) {
+export default async function MovieCard({ movie, userId, isLCP }: MovieCardProps) {
 
     // console.log("movieCard rendered");
     let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
@@ -471,7 +472,7 @@ export default async function MovieCard({ movie, userId }: MovieCardProps) {
 
     return (
         <div className='h-80 w-60 flex items-center justify-center p-3 m-1'>
-            <ImageHover imageUrl={imageURL}>
+            <ImageHover imageUrl={imageURL} isLCP={isLCP}>
                 <p className='font-bold text-xl'>
                     <Link
                         href={`https://www.google.com/search?q=${movie.title}&newwindow=1`}

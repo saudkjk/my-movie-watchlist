@@ -21,9 +21,9 @@ interface DisplayMoviesProps {
 export default async function DisplayMovies({ results, userId, }: DisplayMoviesProps) {
     return (
         <div className='flex flex-wrap justify-center'>
-            {results.map((movie) => (
+            {results.map((movie, index) => (
                 <div key={movie.id}>
-                    <MovieCard movie={movie} userId={userId} />
+                    <MovieCard movie={movie} userId={userId} isLCP={index === 0}/>
                 </div>
             ))}
         </div>

@@ -8,11 +8,13 @@ export const ImageHover = ({
   children,
   childrenClassName,
   className,
+  isLCP,
 }: {
   imageUrl: string;
   children: React.ReactNode | string;
   childrenClassName?: string;
   className?: string;
+  isLCP?: boolean;
 }) => {
   return (
     <div
@@ -28,6 +30,7 @@ export const ImageHover = ({
         src={imageUrl}
         sizes="(max-width: 480px) 35vw, (max-width: 768px) 30vw, (max-width: 992px) 25vw, (max-width: 1200px) 20vw, (max-width: 1600px) 15vw, 10vw"
         quality={80}
+        priority={isLCP}
       />
       <div
         className={cn(
