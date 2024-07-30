@@ -24,7 +24,7 @@ export const ImageHover = ({
       )}
     >
       <Image
-        alt="image"
+        alt="movie poster"
         className={`transition duration-500 ease-in-out transform group-hover:scale-[1.10]  group-hover:brightness-75`}
         fill
         src={imageUrl}
