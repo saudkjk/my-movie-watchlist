@@ -19,6 +19,7 @@ export default function CommentSection({
 }: CommentFormProps) {
   const { isSignedIn } = useUser();
   const router = useRouter();
+
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     if (!isSignedIn) {
       router.push("/sign-in");
@@ -29,7 +30,7 @@ export default function CommentSection({
       const comment = formData.get("comment");
 
       if (comment) {
-        addComment(currentUserId, targetUserId, String(comment));
+        await addComment(currentUserId, targetUserId, String(comment));
       }
 
       event.currentTarget.reset();

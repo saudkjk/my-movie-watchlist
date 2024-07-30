@@ -25,19 +25,20 @@ export default async function MobileNav({ className }: { className?: string }) {
             <MdOutlineMenu className="ml-2 text-3xl" />
           </button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-[220px] sm:w-[300px]">
-          <div className="flex flex-col gap-1 text-center sm:text-left">
-            {links.map((link) => (
-              <SheetClose asChild key={link.path}>
-                <a
-                  href={link.path}
-                  className={`font-semibold hover:text-blue-600`}
-                >
-                  {link.name}
-                </a>
-              </SheetClose>
-            ))}
-          </div>
+        <SheetContent
+          side="left"
+          className="flex w-[220px] flex-col gap-1 text-center sm:w-[300px] sm:text-left"
+        >
+          {links.map((link) => (
+            <SheetClose asChild key={link.path}>
+              <a
+                href={link.path}
+                className={`font-semibold hover:text-blue-600`}
+              >
+                {link.name}
+              </a>
+            </SheetClose>
+          ))}
         </SheetContent>
       </Sheet>
     </div>
