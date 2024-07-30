@@ -450,7 +450,7 @@
 
 "use server";
 import React from "react";
-import { ImageHover } from "./ui/ImageHover";
+import { ImageHover } from "./ImageHover";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { WatchlistButton } from "@/components/WatchlistButton";
 import { CompletedButton } from "@/components/CompletedButton";

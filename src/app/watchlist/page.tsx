@@ -6,7 +6,7 @@ import { fetchMovieById } from "@/lib/API";
 import { getVisibility, updateWithDatabaseStatus } from "@/lib/database";
 import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
-import ChangeVisibilityButton from "@/components/ChangeVisibilityButton";
+import ChangeVisibilitySwitch from "@/components/ChangeVisibilitySwitch";
 
 export default async function Page() {
   const clerkUser = await auth().userId;
@@ -26,7 +26,7 @@ export default async function Page() {
     <>
       <div className="flex justify-between">
         <PageTitle title="Watchlist" />
-        <ChangeVisibilityButton
+        <ChangeVisibilitySwitch
           userId={clerkUser!}
           watchListVisibility={watchListVisibility.isPublic}
         />

@@ -19,7 +19,7 @@ export const ImageHover = ({
   return (
     <div
       className={cn(
-        "group relative inset-0 h-full w-full overflow-hidden rounded-lg bg-transparent",
+        "group relative inset-0 h-full w-full overflow-hidden rounded-lg bg-transparent shadow-md shadow-black/40 dark:shadow-sm dark:shadow-gray-700/50",
         className,
       )}
     >

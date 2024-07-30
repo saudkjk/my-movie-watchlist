@@ -26,7 +26,7 @@ export default function RootLayout({
         signUp: { variables: { colorPrimary: "#009090" } },
       }}
     >
-      <html lang="en" className="!scroll-smooth">
+      <html lang="en">
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"
