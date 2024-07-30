@@ -1,6 +1,6 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 import { BsHandThumbsUp, BsHandThumbsDown } from "react-icons/bs";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { addToCompleted, removeFromCompleted } from "@/lib/database";
@@ -18,10 +18,11 @@ export function CompletedButton({ userId, movie }: CompletedButtonProps) {
 
   const [inCompleted, setInCompleted] = useState(movie.inCompleted);
   const [isLiked, setIsLiked] = useState(movie.isLiked);
+  const { openSignIn } = useClerk();
 
   const handleToggleCompleted = async (action: string, rating: string = "") => {
     if (!isSignedIn) {
-      router.push("/sign-in");
+      openSignIn();
     } else {
       setInCompleted(!inCompleted);
 

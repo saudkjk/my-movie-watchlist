@@ -1,0 +1,16 @@
+import { SignUp } from "@clerk/nextjs";
+import Link from "next/link";
+import React from "react";
+
+function page() {
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60">
+      <SignUp />
+      <Link href="/" className="mt-2 text-red-500 hover:text-red-700">
+        Cancel
+      </Link>
+    </div>
+  );
+}
+
+export default page;

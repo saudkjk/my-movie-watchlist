@@ -9,7 +9,7 @@ export default async function AuthButtons() {
         </SignInButton>
       </SignedOut>
       <SignedIn>
-        <UserButton />
+        <UserButton  />
       </SignedIn>
     </>
   );

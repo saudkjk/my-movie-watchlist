@@ -18,7 +18,6 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const username = params.username;
-
   // get user id
   const usersList = await clerkClient.users.getUserList();
   const user = usersList.data.find((user) => user.username === username);

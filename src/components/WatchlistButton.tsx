@@ -1,7 +1,7 @@
 "use client";
 import { BsCheckCircle, BsPlusCircle } from "react-icons/bs";
 import { usePathname, useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 import { addToWatchlist, removeFromWatchlist } from "@/lib/database";
 import {
   Tooltip,
@@ -19,12 +19,13 @@ export function WatchlistButton({ userId, movie }: WatchlistButtonProps) {
   const { isSignedIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
+  const { openSignIn } = useClerk();
 
   const [inWatchlist, setInWatchlist] = useState(movie.inWatchlist);
 
   const handleUpdateWatchlist = async (action: string) => {
     if (!isSignedIn) {
-      router.push("/sign-in");
+      openSignIn();
     } else {
       setInWatchlist(!inWatchlist);
 
