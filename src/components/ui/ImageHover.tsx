@@ -19,13 +19,13 @@ export const ImageHover = ({
   return (
     <div
       className={cn(
-        "relative h-full w-full inset-0 bg-transparent rounded-lg overflow-hidden group",
-        className
+        "group relative inset-0 h-full w-full overflow-hidden rounded-lg bg-transparent",
+        className,
       )}
     >
       <Image
         alt="movie poster"
-        className={`transition duration-500 ease-in-out transform group-hover:scale-[1.10]  group-hover:brightness-75`}
+        className={`transform transition duration-500 ease-in-out group-hover:scale-[1.10] group-hover:brightness-75`}
         fill
         src={imageUrl}
         sizes="(max-width: 480px) 35vw, (max-width: 768px) 30vw, (max-width: 992px) 25vw, (max-width: 1200px) 20vw, (max-width: 1600px) 15vw, 10vw"
@@ -34,8 +34,8 @@ export const ImageHover = ({
       />
       <div
         className={cn(
-          "text-white absolute bottom-0 left-4 z-40 transition duration-500 ease-out opacity-0 group-hover:opacity-100",
-          childrenClassName
+          "absolute bottom-0 left-4 z-40 text-white opacity-0 transition duration-500 ease-out group-hover:opacity-100",
+          childrenClassName,
         )}
       >
         {children}

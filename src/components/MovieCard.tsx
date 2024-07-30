@@ -458,43 +458,45 @@ import { CompletedButton } from "@/components/CompletedButton";
 import Link from "next/link";
 
 type MovieCardProps = {
-    userId: string;
-    movie: any;
-    isLCP: boolean;
+  userId: string;
+  movie: any;
+  isLCP: boolean;
 };
 
-export default async function MovieCard({ movie, userId, isLCP }: MovieCardProps) {
+export default async function MovieCard({
+  movie,
+  userId,
+  isLCP,
+}: MovieCardProps) {
+  // console.log("movieCard rendered");
+  let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
+  if (imageURL.endsWith("null")) imageURL = "/posterPlaceHolder.jpg";
+  // const imageURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBgFZfYsQAAAAASUVORK5CYII="
 
-    // console.log("movieCard rendered");
-    let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
-    if (imageURL.endsWith("null")) imageURL = "/posterPlaceHolder.jpg";
-    // const imageURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBgFZfYsQAAAAASUVORK5CYII="
-
-    return (
-        <div className='h-80 w-60 flex items-center justify-center p-3 m-1'>
-            <ImageHover imageUrl={imageURL} isLCP={isLCP}>
-                <p className='font-bold text-xl'>
-                    <Link
-                        href={`https://www.google.com/search?q=${movie.title}&newwindow=1`}
-                        target='_blank'
-                        className=' hover:text-emerald-400'
-                    >
-                        {movie.title}
-                    </Link>
-                </p>
-                <p className='font-normal text-sm'>
-                    Duration:{" "}
-                    {movie.runtime ? `${movie.runtime} minutes` : "N/A"}
-                    <br />
-                    Rating: {movie.vote_average.toFixed(1)}
-                </p>
-                <TooltipProvider>
-                    <div className='flex mb-2 mt-1'>
-                        <WatchlistButton userId={userId} movie={movie} />
-                        <CompletedButton userId={userId} movie={movie} />
-                    </div>
-                </TooltipProvider>
-            </ImageHover>
-        </div>
-    );
+  return (
+    <div className="m-1 flex h-80 w-60 items-center justify-center p-3">
+      <ImageHover imageUrl={imageURL} isLCP={isLCP}>
+        <p className="text-xl font-bold">
+          <Link
+            href={`https://www.google.com/search?q=${movie.title}&newwindow=1`}
+            target="_blank"
+            className="hover:text-emerald-400"
+          >
+            {movie.title}
+          </Link>
+        </p>
+        <p className="text-sm font-normal">
+          Duration: {movie.runtime ? `${movie.runtime} minutes` : "N/A"}
+          <br />
+          Rating: {movie.vote_average.toFixed(1)}
+        </p>
+        <TooltipProvider>
+          <div className="mb-2 mt-1 flex">
+            <WatchlistButton userId={userId} movie={movie} />
+            <CompletedButton userId={userId} movie={movie} />
+          </div>
+        </TooltipProvider>
+      </ImageHover>
+    </div>
+  );
 }

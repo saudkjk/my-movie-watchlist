@@ -9,24 +9,22 @@ import GenreNav from "./navbarComponents/GenreNav";
 
 export default async function Navbar() {
   return (
-    <div className='flex justify-between items-center relative w-full'>
-
-      <div className='flex-1 flex w-full '>
-        <div className='md:hidden'> <MobileNav /> </div>
-        <div className='hidden md:flex'> <Home /> </div>
+    <div className="relative flex w-full items-center justify-between">
+      <div className="flex w-full flex-1">
+        <MobileNav className="md:hidden" />
+        <Home className="hidden md:flex" />
         <GenreNav />
       </div>
 
-      <div className='hidden md:flex'> <DesktopNav /> </div>
-      <div className='md:hidden'> <Logo /> </div>
-
-      <div className='flex-1 flex w-full justify-end'>
-        <div className='flex md:relative p-1 lg:text-lg gap-3 md:gap-0 '>
-          <AuthButtons />
-          <DarkModeSwitch />
-        </div>
+      <div className="hidden md:flex">
+        <DesktopNav />
       </div>
+      <Logo className="md:hidden" />
 
+      <div className="flex w-full flex-1 justify-end gap-3 p-1 md:relative md:gap-0 lg:text-lg">
+        <AuthButtons />
+        <DarkModeSwitch />
+      </div>
     </div>
   );
 }
