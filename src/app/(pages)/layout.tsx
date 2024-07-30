@@ -5,7 +5,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import "../globals.css";
 import { ThemeProvider } from "../ThemeProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -40,7 +39,6 @@ export default function RootLayout({
                             {children}
                         </main>
                     </ThemeProvider>
-                    <SpeedInsights />
                 </body>
             </html>
         </ClerkProvider>
