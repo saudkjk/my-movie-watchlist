@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FormEvent } from "react";
 import { addComment } from "@/lib/database";
-import { useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 type CommentFormProps = {
@@ -58,9 +58,14 @@ export default function CommentSection({
             <Button type="submit">Comment</Button>
           </div>
         ) : (
-          <div className="my-2 flex justify-center gap-2 text-red-500">
-            Login to comment
-          </div>
+          <SignInButton
+            fallbackRedirectUrl={`/browse/${username}`}
+            mode="modal"
+          >
+            <div className="my-2 cursor-pointer gap-2 font-semibold text-red-500 hover:text-blue-600">
+              Login to comment
+            </div>
+          </SignInButton>
         )}
       </form>
     </div>

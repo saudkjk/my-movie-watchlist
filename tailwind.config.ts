@@ -85,6 +85,25 @@ const config = {
       },
     },
     extend: {
+      animation: {
+        'gradient-animation': 'gradient-animation 3s ease infinite',
+      },
+      keyframes: {
+        'gradient-animation': {
+          '0%': {
+            'background-position': '0% 50%',
+          },
+          '50%': {
+            'background-position': '100% 50%',
+          },
+          '100%': {
+            'background-position': '0% 50%',
+          },
+        },
+      },
+      backgroundSize: {
+        '200%': '200% 200%',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

@@ -42,9 +42,7 @@ export default async function Page({ params }: PageProps) {
 
   const clerkUser = await auth().userId;
   const results = await fetchMovieById(userWatchlistIds);
-  const updatedResults = clerkUser
-    ? await updateWithDatabaseStatus(String(clerkUser), results)
-    : results;
+  const updatedResults = clerkUser ? await updateWithDatabaseStatus(String(clerkUser), results) : results;
   const comments = await getCommentsForUser(userId);
 
   return (

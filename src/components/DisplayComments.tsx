@@ -61,7 +61,7 @@ export default function DisplayComments({ comments, users }: CommentsProps) {
                   </div>
                 </div>
               </div>
-              <div>{comment.comment}</div>
+              {comment.comment}
             </div>
             {clerkUser.user?.id === comment.userId && (
               <button

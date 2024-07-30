@@ -20,6 +20,7 @@ export default function NavbarItem({ title, href, path }: NavbarItemProps) {
   return (
     <a
       href={href}
+      key={title}
       className={`font-semibold hover:text-blue-600 ${
         currentPath === path || realPathname === path
           ? "rounded-lg underline decoration-blue-500 decoration-4 underline-offset-8"

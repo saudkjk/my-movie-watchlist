@@ -26,7 +26,7 @@ export default function GenreNav() {
             Genre
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[250px] grid-cols-2 gap-3 p-4 md:w-[300px]">
+            <ul className="grid w-[320px] grid-cols-3 gap-3 p-4 md:w-[370px]">
               {genres.genres.map((genre: Genre) => (
                 <ListItem
                   key={genre.id}

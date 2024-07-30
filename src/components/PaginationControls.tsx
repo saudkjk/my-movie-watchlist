@@ -20,7 +20,7 @@ export default function PaginationControls() {
   }
 
   const handlePageChange = (newPage: number) => {
-    router.replace(`${pathname}?${paramName}=${param}&page=${newPage}`);
+    router.push(`${pathname}?${paramName}=${param}&page=${newPage}`);
   };
 
   return (

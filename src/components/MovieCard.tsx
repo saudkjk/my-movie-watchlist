@@ -468,13 +468,12 @@ export default async function MovieCard({
   userId,
   isLCP,
 }: MovieCardProps) {
-  // console.log("movieCard rendered");
   let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
   if (imageURL.endsWith("null")) imageURL = "/posterPlaceHolder.jpg";
   // const imageURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBgFZfYsQAAAAASUVORK5CYII="
 
   return (
-    <div className="m-1 flex h-80 w-60 items-center justify-center p-3">
+    <div className="m-1 flex h-80 w-60 p-3">
       <ImageHover imageUrl={imageURL} isLCP={isLCP}>
         <p className="text-xl font-bold">
           <Link

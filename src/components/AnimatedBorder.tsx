@@ -1,33 +1,10 @@
-import { motion } from "framer-motion";
 import React from "react";
 
-export default function AnimatedBorder({ children }: any) {
-  const gradient = `linear-gradient(45deg, rgba(255,0,150,1) 0%, rgba(0,204,255,1) 50%, rgba(9,9,121,1) 100%)`;
-
+export default async function AnimatedBorder({ children }: any) {
+  console.log("consel?");
   return (
-    <motion.div
-      style={{
-        padding: "2px",
-        borderRadius: "8px",
-        background: gradient,
-        backgroundSize: "200% 200%",
-        animation: "gradient-animation 3s ease infinite",
-      }}
-    >
+    <div className="animate-gradient-animation rounded-lg bg-gradient-to-r from-pink-500 via-blue-500 to-indigo-900 bg-[length:200%_200%] p-0.5">
       {children}
-      <style jsx>{`
-        @keyframes gradient-animation {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-      `}</style>
-    </motion.div>
+    </div>
   );
 }
