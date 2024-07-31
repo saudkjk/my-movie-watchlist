@@ -10,21 +10,21 @@ export async function fetchMoviesByQuery(query: string, page: number) {
   }
   const data = await res.json();
 
-  // get runtime
-  const results = await Promise.all(
-    data.results.map(async (movie: any) => {
-      const movieRes = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
-      );
-      const movieData = await movieRes.json();
-      return {
-        ...movie,
-        runtime: movieData.runtime,
-      };
-    })
-  );
+  // // get runtime
+  // const results = await Promise.all(
+  //   data.results.map(async (movie: any) => {
+  //     const movieRes = await fetch(
+  //       `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
+  //     );
+  //     const movieData = await movieRes.json();
+  //     return {
+  //       ...movie,
+  //       runtime: movieData.runtime,
+  //     };
+  //   })
+  // );
 
-  return results;
+  return data.results;
 }
 
 export async function fetchMoviesTopTrending(genre: string, page: number) {
@@ -37,21 +37,22 @@ export async function fetchMoviesTopTrending(genre: string, page: number) {
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }
-  // get runtime
-  const results = await Promise.all(
-    data.results.map(async (movie: any) => {
-      const movieRes = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
-      );
-      const movieData = await movieRes.json();
-      return {
-        ...movie,
-        runtime: movieData.runtime,
-      };
-    })
-  );
 
-  return results;
+  // // get runtime
+  // const results = await Promise.all(
+  //   data.results.map(async (movie: any) => {
+  //     const movieRes = await fetch(
+  //       `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
+  //     );
+  //     const movieData = await movieRes.json();
+  //     return {
+  //       ...movie,
+  //       runtime: movieData.runtime,
+  //     };
+  //   })
+  // );
+
+  return data.results;
 }
 
 export async function fetchMoviesByGenre(genreId: number, page: number) {
@@ -64,21 +65,21 @@ export async function fetchMoviesByGenre(genreId: number, page: number) {
     throw new Error('Failed to fetch data');
   }
 
-  // get runtime
-  const results = await Promise.all(
-    data.results.map(async (movie: any) => {
-      const movieRes = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
-      );
-      const movieData = await movieRes.json();
-      return {
-        ...movie,
-        runtime: movieData.runtime,
-      };
-    })
-  );
+  // // get runtime
+  // const results = await Promise.all(
+  //   data.results.map(async (movie: any) => {
+  //     const movieRes = await fetch(
+  //       `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
+  //     );
+  //     const movieData = await movieRes.json();
+  //     return {
+  //       ...movie,
+  //       runtime: movieData.runtime,
+  //     };
+  //   })
+  // );
 
-  return results;
+  return data.results;
 }
 
 export async function fetchMoviesByIds(movies: any[]) {
@@ -98,7 +99,7 @@ export async function fetchMoviesByIds(movies: any[]) {
         return movieData;
       } catch (error) {
         console.error(`Error fetching movie ID ${movie.movieId}:`, error);
-        return null; 
+        return null;
       }
     })
   );
