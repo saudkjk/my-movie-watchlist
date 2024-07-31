@@ -2,36 +2,36 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/db";
 import React from "react";
-import { fetchMovieById } from "@/lib/API";
+import { fetchMoviesByIds } from "@/lib/API";
 import { getVisibility, updateWithDatabaseStatus } from "@/lib/database";
 import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
 import ChangeVisibilitySwitch from "@/components/ChangeVisibilitySwitch";
 
 export default async function Page() {
-  const clerkUser = await auth().userId;
-  if (!clerkUser) auth().redirectToSignIn();
-
-  const userWatchlistIds = await prisma.watchlist.findMany({
+  const currentUserId = await auth().userId;
+  const watchlistMoviesIds = await prisma.watchlist.findMany({
     where: {
-      userId: clerkUser!,
+      userId: currentUserId!,
     },
   });
 
-  const results = await fetchMovieById(userWatchlistIds);
-  const updatedResults = await updateWithDatabaseStatus(clerkUser!, results);
-  const watchListVisibility = await getVisibility(clerkUser!);
+  const watchlistMovies = await fetchMoviesByIds(watchlistMoviesIds);
+  const watchlistVisibility = await getVisibility(currentUserId!);
 
   return (
     <>
       <div className="flex justify-between">
         <PageTitle title="Watchlist" />
         <ChangeVisibilitySwitch
-          userId={clerkUser!}
-          watchListVisibility={watchListVisibility.isPublic}
+          userId={currentUserId!}
+          watchListVisibility={watchlistVisibility.isPublic}
         />
       </div>
-      <DisplayMovies results={updatedResults.reverse()} userId={clerkUser!} />
+      <DisplayMovies
+        movies={watchlistMovies.reverse()}
+        currentUserId={currentUserId!}
+      />
     </>
   );
 }

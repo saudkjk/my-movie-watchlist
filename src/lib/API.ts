@@ -1,7 +1,7 @@
 import 'server-only';
 const API_KEY = process.env.API_KEY;
 
-export async function fetchMoviesQueries(query: string, page: number) {
+export async function fetchMoviesByQuery(query: string, page: number) {
 
   // get movies
   const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}&language=en-US&page=${page}`);
@@ -54,7 +54,6 @@ export async function fetchMoviesTopTrending(genre: string, page: number) {
   return results;
 }
 
-
 export async function fetchMoviesByGenre(genreId: number, page: number) {
   // get movies by genre
   const res = await fetch(
@@ -82,24 +81,24 @@ export async function fetchMoviesByGenre(genreId: number, page: number) {
   return results;
 }
 
-export async function fetchMovieById(watchlist: any[]) {
+export async function fetchMoviesByIds(movies: any[]) {
 
   const results = await Promise.all(
-    watchlist.map(async (item) => {
+    movies.map(async (movie) => {
       try {
         const movieRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${item.movieId}?api_key=${API_KEY}&language=en-US`
+          `https://api.themoviedb.org/3/movie/${movie.movieId}?api_key=${API_KEY}&language=en-US`
         );
 
         if (!movieRes.ok) {
-          throw new Error(`Failed to fetch movie with ID ${item.movieId}`);
+          throw new Error(`Failed to fetch movie with ID ${movie.movieId}`);
         }
 
         const movieData = await movieRes.json();
         return movieData;
       } catch (error) {
-        console.error(`Error fetching movie ID ${item.movieId}:`, error);
-        return null; // Return null or some error indicator
+        console.error(`Error fetching movie ID ${movie.movieId}:`, error);
+        return null; 
       }
     })
   );

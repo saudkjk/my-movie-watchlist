@@ -2,28 +2,28 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/db";
 import React from "react";
-import { fetchMovieById } from "@/lib/API";
-import { updateWithDatabaseStatus } from "@/lib/database";
+import { fetchMoviesByIds } from "@/lib/API";
 import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
 
 export default async function Page() {
-  const clerkUser = await auth().userId;
-  if (!clerkUser) auth().redirectToSignIn();
+  const currentUserId = await auth().userId;
 
-  const userCompletedlist = await prisma.completed.findMany({
+  const completedMoviesIds = await prisma.completed.findMany({
     where: {
-      userId: clerkUser!,
+      userId: currentUserId!,
     },
   });
 
-  const results = await fetchMovieById(userCompletedlist);
-  const updatedResults = await updateWithDatabaseStatus(clerkUser!, results);
+  const completedMovies = await fetchMoviesByIds(completedMoviesIds);
 
   return (
     <>
       <PageTitle title="Completed" />
-      <DisplayMovies results={updatedResults.reverse()} userId={clerkUser!} />
+      <DisplayMovies
+        movies={completedMovies.reverse()}
+        currentUserId={currentUserId!}
+      />
     </>
   );
 }

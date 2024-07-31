@@ -1,10 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { FormEvent } from "react";
 import { addComment } from "@/lib/database";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { useRef } from "react";
+import { z } from "zod";
 
 type CommentFormProps = {
   username: string;
@@ -12,29 +13,31 @@ type CommentFormProps = {
   currentUserId: string;
 };
 
+const commentSchema = z.object({
+  comment: z.string().min(1, "Comment cannot be empty"),
+});
+
 export default function CommentSection({
   username,
   targetUserId,
   currentUserId,
 }: CommentFormProps) {
   const { isSignedIn } = useUser();
-  const router = useRouter();
+  const ref = useRef<HTMLFormElement>(null);
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    if (!isSignedIn) {
-      router.push("/sign-in");
-    } else {
-      event.preventDefault();
+  async function formAction(formData: FormData) {
+    ref.current?.reset();
+    const comment = formData.get("comment");
 
-      const formData = new FormData(event.currentTarget);
-      const comment = formData.get("comment");
+    const validation = commentSchema.safeParse({ comment });
 
-      if (comment) {
-        await addComment(currentUserId, targetUserId, String(comment));
-      }
-
-      event.currentTarget.reset();
+    if (!validation.success) {
+      console.error(validation.error.errors);
+      return;
     }
+
+    if (comment)
+      await addComment(currentUserId, targetUserId, String(comment), username);
   }
 
   return (
@@ -48,7 +51,7 @@ export default function CommentSection({
       <p className="text-sm text-muted-foreground">
         Your comment is public and will be viewable by everyone
       </p>
-      <form onSubmit={onSubmit}>
+      <form action={formAction} ref={ref}>
         <Textarea
           name="comment"
           placeholder="Type your comment here."

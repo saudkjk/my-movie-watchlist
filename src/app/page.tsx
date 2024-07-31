@@ -2,21 +2,13 @@
 import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
 import { fetchMoviesTopTrending } from "@/lib/API";
-import { updateWithDatabaseStatus } from "@/lib/database";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 export default async function Page() {
-  const trendingResults = await fetchMoviesTopTrending("fetchTrending", 1);
-  const topRatedResults = await fetchMoviesTopTrending("fetchTopRated", 1);
-
-  const clerkUser = await auth().userId;
-  const updatedTrending = clerkUser
-    ? await updateWithDatabaseStatus(String(clerkUser), trendingResults)
-    : trendingResults;
-  const updatedTopRated = clerkUser
-    ? await updateWithDatabaseStatus(String(clerkUser), topRatedResults)
-    : topRatedResults;
+  const currentUserId = await auth().userId;
+  const trendingMovies = await fetchMoviesTopTrending("fetchTrending", 1);
+  const topRatedMovies = await fetchMoviesTopTrending("fetchTopRated", 1);
 
   return (
     <>
@@ -29,7 +21,7 @@ export default async function Page() {
           See all
         </Link>
       </div>
-      <DisplayMovies results={updatedTrending} userId={clerkUser!} />
+      <DisplayMovies movies={trendingMovies} currentUserId={currentUserId!} />
 
       <div className="flex gap-2">
         <PageTitle title="Top Rated" />
@@ -40,7 +32,7 @@ export default async function Page() {
           See all
         </Link>
       </div>
-      <DisplayMovies results={updatedTopRated} userId={clerkUser!} />
+      <DisplayMovies movies={topRatedMovies} currentUserId={currentUserId!} />
     </>
   );
 }

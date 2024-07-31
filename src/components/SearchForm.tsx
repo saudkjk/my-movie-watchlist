@@ -3,16 +3,28 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import AnimatedBorder from "@/components/AnimatedBorder";
 import { useDebouncedCallback } from "use-debounce";
+import { z } from "zod";
+
+const searchSchema = z.object({
+  query: z
+    .string()
+    .min(1, "Search query must not be empty")
+    .max(100, "Search query is too long"),
+});
 
 export default function SearchForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const handleSearch = useDebouncedCallback((searchQuery: string) => {
+    const validationResult = searchSchema.safeParse({ query: searchQuery });
     const params = new URLSearchParams();
-    if (searchQuery) {
+
+    if (validationResult.success) {
       params.set("query", searchQuery);
       params.set("page", "1");
     }
+
     router.replace(`/search?${params.toString()}`);
   }, 400);
 

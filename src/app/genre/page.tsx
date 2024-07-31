@@ -6,6 +6,7 @@ import { updateWithDatabaseStatus } from "@/lib/database";
 import { auth } from "@clerk/nextjs/server";
 import genres from "@/lib/genres.json";
 import PaginationControls from "@/components/PaginationControls";
+import { redirect } from "next/navigation";
 
 type PageProps = {
   searchParams: {
@@ -15,40 +16,35 @@ type PageProps = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  const myGenre = searchParams.genre;
-  const myPageNumber = searchParams.page;
+  const genre = searchParams.genre;
+  const page = searchParams.page;
 
-  // Find the genre ID from the genre name
-  const genreId = genres.genres.find(
-    (g) => g.name.toLowerCase() === myGenre.toLowerCase(),
-  )?.id;
+  const currentUserId = await auth().userId;
 
-  let results;
-  if (myGenre === "toprated" || myGenre === "trending") {
-    results = await fetchMoviesTopTrending(myGenre, myPageNumber);
-  } else if (genreId) {
-    results = await fetchMoviesByGenre(genreId, myPageNumber);
+  let genreMovies;
+  let title;
+
+  if (genre === "toprated") {
+    genreMovies = await fetchMoviesTopTrending("toprated", page);
+    title = "Top Rated";
+  } else if (genre === "trending") {
+    genreMovies = await fetchMoviesTopTrending("trending", page);
+    title = "Trending";
   } else {
-    throw new Error("Invalid genre");
-  }
+    // Find the genre ID from the genre name
+    const genreId = genres.genres.find(
+      (g) => g.name.toLowerCase() === genre.toLowerCase(),
+    )?.id;
+    if (!genreId) redirect("/");
 
-  const clerkUser = await auth().userId;
-  const updatedResults = clerkUser
-    ? await updateWithDatabaseStatus(String(clerkUser), results)
-    : results;
+    genreMovies = await fetchMoviesByGenre(genreId!, page);
+    title = genre.charAt(0).toUpperCase() + genre.slice(1);
+  }
 
   return (
     <>
-      <PageTitle
-        title={
-          myGenre === "toprated"
-            ? "Top Rated"
-            : myGenre === "trending"
-              ? "Trending"
-              : myGenre.charAt(0).toUpperCase() + myGenre.slice(1)
-        }
-      />
-      <DisplayMovies results={updatedResults} userId={clerkUser!} />
+      <PageTitle title={title} />
+      <DisplayMovies movies={genreMovies} currentUserId={currentUserId!} />
       <PaginationControls />
     </>
   );

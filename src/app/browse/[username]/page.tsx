@@ -3,73 +3,66 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/db";
 import React from "react";
-import { fetchMovieById } from "@/lib/API";
-import { getCommentsForUser, updateWithDatabaseStatus } from "@/lib/database";
+import { fetchMoviesByIds } from "@/lib/API";
 import DisplayMovies from "@/components/DisplayMovies";
 import Image from "next/image";
 import DisplayComments from "@/components/DisplayComments";
 import CommentForm from "@/components/CommentForm";
 import { clerkClient } from "@clerk/clerk-sdk-node";
-type PageProps = {
+import PageTitle from "@/components/PageTitle";
+
+type PagePropss = {
   params: {
     username: string;
   };
 };
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: PagePropss) {
   const username = params.username;
-  // get user id
+  const currentUserId = await auth().userId;
+
+  // get user id and image from username
   const usersList = await clerkClient.users.getUserList();
   const user = usersList.data.find((user) => user.username === username);
-  const userId = user ? user.id : null;
+  const currentWatchlistUserId = user ? user.id : null;
   const imageUrl = user ? user.imageUrl : null;
 
-  const users = usersList.data.map((user) => ({
-    username: user.username,
-    imageUrl: user.imageUrl,
-    userId: user.id,
-  }));
+  if (!currentWatchlistUserId) redirect("/browse");
 
-  if (!userId) {
-    redirect("/browse");
-  }
-
-  const userWatchlistIds = await prisma.watchlist.findMany({
+  const watchlistMoviesIds = await prisma.watchlist.findMany({
     where: {
-      userId: userId,
+      userId: currentWatchlistUserId,
     },
   });
-
-  const clerkUser = await auth().userId;
-  const results = await fetchMovieById(userWatchlistIds);
-  const updatedResults = clerkUser ? await updateWithDatabaseStatus(String(clerkUser), results) : results;
-  const comments = await getCommentsForUser(userId);
+  const movies = await fetchMoviesByIds(watchlistMoviesIds);
 
   return (
     <>
-      <div className="sticky mb-4 mt-4 bg-opacity-50 md:mt-8">
-        <div className="flex items-center space-x-4 px-4">
+      <div className="my-4 flex gap-3">
+        <div className="relative mt-4 h-8 w-8 md:mt-0 md:h-9 md:w-9">
           {imageUrl && (
             <Image
-              src={imageUrl}
+              fill
               alt={username}
-              width="50"
-              height="50"
+              src={imageUrl}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="rounded-full"
             />
           )}
-          <div className="text-2xl font-bold text-gray-700 dark:text-gray-200 md:text-3xl">
-            {username}&rsquo;s Watchlist: {results.length}
-          </div>
         </div>
+        <PageTitle title={`${username}'s Watchlist: ${movies.length}`} />
       </div>
-      <DisplayMovies results={updatedResults} userId={clerkUser!} />
+      <DisplayMovies movies={movies} currentUserId={currentUserId!} />
       <CommentForm
         username={username}
-        targetUserId={userId}
-        currentUserId={clerkUser!}
+        targetUserId={currentWatchlistUserId}
+        currentUserId={currentUserId!}
       />
-      <DisplayComments comments={comments?.data || []} users={users} />
+      <DisplayComments
+        currentWatchlistUserId={currentWatchlistUserId}
+        usersList={usersList}
+        currentUserId={currentUserId!}
+      />
     </>
   );
 }

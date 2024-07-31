@@ -8,14 +8,14 @@ import { CompletedButton } from "@/components/CompletedButton";
 import Link from "next/link";
 
 type MovieCardProps = {
-  userId: string;
+  currentUserId: string;
   movie: any;
   isLCP: boolean;
 };
 
 export default async function MovieCard({
   movie,
-  userId,
+  currentUserId,
   isLCP,
 }: MovieCardProps) {
   let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
@@ -41,8 +41,8 @@ export default async function MovieCard({
         </p>
         <TooltipProvider>
           <div className="mb-2 mt-1 flex">
-            <WatchlistButton userId={userId} movie={movie} />
-            <CompletedButton userId={userId} movie={movie} />
+            <WatchlistButton currentUserId={currentUserId} movie={movie} />
+            <CompletedButton currentUserId={currentUserId} movie={movie} />
           </div>
         </TooltipProvider>
       </ImageHover>

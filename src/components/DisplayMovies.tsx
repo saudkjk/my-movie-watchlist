@@ -1,6 +1,7 @@
 "use server";
 import React from "react";
 import MovieCard from "./MovieCard";
+import { updateWithDatabaseStatus } from "@/lib/database";
 
 interface Movie {
   id: string;
@@ -14,19 +15,26 @@ interface Movie {
 }
 
 interface DisplayMoviesProps {
-  results: Movie[];
-  userId: string;
+  movies: Movie[];
+  currentUserId: string;
 }
 
 export default async function DisplayMovies({
-  results,
-  userId,
+  movies,
+  currentUserId,
 }: DisplayMoviesProps) {
+  const updatedMovies = currentUserId
+    ? await updateWithDatabaseStatus(String(currentUserId), movies)
+    : movies;
   return (
     <div className="flex flex-wrap justify-center">
-      {results.map((movie, index) => (
+      {updatedMovies.map((movie, index) => (
         <div key={movie.id}>
-          <MovieCard movie={movie} userId={userId} isLCP={index === 0} />
+          <MovieCard
+            movie={movie}
+            currentUserId={currentUserId}
+            isLCP={index === 0}
+          />
         </div>
       ))}
     </div>

@@ -11,11 +11,14 @@ import {
 import { useState } from "react";
 
 type WatchlistButtonProps = {
-  userId: string;
+  currentUserId: string;
   movie: any;
 };
 
-export function WatchlistButton({ userId, movie }: WatchlistButtonProps) {
+export function WatchlistButton({
+  currentUserId,
+  movie,
+}: WatchlistButtonProps) {
   const { isSignedIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,9 +34,9 @@ export function WatchlistButton({ userId, movie }: WatchlistButtonProps) {
 
       try {
         if (action === "add") {
-          await addToWatchlist(userId, movie.id);
+          await addToWatchlist(currentUserId, movie.id);
         } else if (action === "remove") {
-          await removeFromWatchlist(userId, movie.id);
+          await removeFromWatchlist(currentUserId, movie.id);
           if (pathname === "/watchlist") router.refresh();
         }
       } catch (error) {

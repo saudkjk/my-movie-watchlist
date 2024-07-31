@@ -3,7 +3,7 @@ import { prisma } from '@/db';
 import { revalidatePath } from 'next/cache';
 import { clerkClient } from '@clerk/clerk-sdk-node';
 
-export async function addComment(userId: string, targetUserId: string, comment: string) {
+export async function addComment(userId: string, targetUserId: string, comment: string, username: string) {
     try {
         await prisma.comments.create({
             data: {
@@ -12,7 +12,7 @@ export async function addComment(userId: string, targetUserId: string, comment: 
                 comment: comment,
             }
         });
-        revalidatePath('/');
+        revalidatePath(`/browse/${username}`);
         return { status: 200, message: "Added comment successfully" };
     } catch (error) {
         console.error('Error adding comment:', error);
@@ -35,7 +35,7 @@ export async function removeComment(commentId: string) {
     }
 }
 
-export async function getCommentsForUser(targetUserId: string) {
+export async function getUserWatchlistComments(targetUserId: string) {
     try {
         const comments = await prisma.comments.findMany({
             where: {
@@ -60,7 +60,6 @@ export async function addToWatchlist(userId: string, movieId: string) {
                 userId: userId
             }
         });
-        // revalidatePath('/');
         return { status: 200, message: "Added to watchlist successfully" };
     } catch (error) {
         console.error('Error adding to watchlist:', error);
@@ -77,7 +76,6 @@ export async function addToCompleted(userId: string, movieId: string, rating: st
                 rating: rating
             }
         });
-        // revalidatePath('/');
         return { status: 200, message: "Added to completed successfully" };
     } catch (error) {
         console.error('Error adding to completed:', error);
@@ -94,8 +92,6 @@ export async function removeFromWatchlist(userId: string, movieId: string) {
                 userId: userId
             }
         });
-
-        // revalidatePath('/');
         return { status: 200, message: "Removed from watchlist successfully" };
     } catch (error) {
         console.error('Error removing from watchlist:', error);
@@ -111,7 +107,6 @@ export async function removeFromCompleted(userId: string, movieId: string) {
                 userId: userId
             }
         });
-        // revalidatePath('/');
         return { status: 200, message: "Removed from completed successfully" };
     } catch (error) {
         console.error('Error removing from completed:', error);
@@ -177,7 +172,6 @@ export async function isLiked(userId: string, movieIds: number[]) {
     }
 }
 
-
 export async function updateWithDatabaseStatus(userId: string, movies: any[]) {
     const movieIds = movies.map(movie => movie.id);
 
@@ -202,7 +196,7 @@ export async function updateWithDatabaseStatus(userId: string, movies: any[]) {
 
 export async function changeVisibility(userId: string) {
     try {
-        // Retrieve current visibility
+        // get current visibility
         let userSettings = await prisma.userSettings.findUnique({
             where: { userId: userId },
             select: { watchlistVisibility: true }
@@ -213,13 +207,12 @@ export async function changeVisibility(userId: string) {
             userSettings = await prisma.userSettings.create({
                 data: {
                     userId: userId,
-                    watchlistVisibility: "private" // Explicitly set to private, although default is private
+                    watchlistVisibility: "private" 
                 },
                 select: { watchlistVisibility: true }
             });
         }
 
-        // Toggle visibility
         const newVisibility = userSettings.watchlistVisibility === "public" ? "private" : "public";
 
         // Update visibility
@@ -246,7 +239,7 @@ export async function getVisibility(userId: string) {
             userSettings = await prisma.userSettings.create({
                 data: {
                     userId: userId,
-                    watchlistVisibility: "private" // Explicitly set to private, although default is private
+                    watchlistVisibility: "private" 
                 },
                 select: { watchlistVisibility: true }
             });
@@ -273,10 +266,10 @@ export async function getUsersWithPublicVisibility() {
             }
         });
 
-        // Extract user IDs
+        // Extract user Ids
         const publicUserIds = publicUsers.map(user => user.userId);
 
-        // Fetch user list from clerkClient
+        // Fetch all users from clerkClient
         const usersList = await clerkClient.users.getUserList();
 
         // Filter users based on publicUserIds

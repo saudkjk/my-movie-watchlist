@@ -7,11 +7,14 @@ import { addToCompleted, removeFromCompleted } from "@/lib/database";
 import { useState } from "react";
 
 type CompletedButtonProps = {
-  userId: string;
+  currentUserId: string;
   movie: any;
 };
 
-export function CompletedButton({ userId, movie }: CompletedButtonProps) {
+export function CompletedButton({
+  currentUserId,
+  movie,
+}: CompletedButtonProps) {
   const { isSignedIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
@@ -30,9 +33,9 @@ export function CompletedButton({ userId, movie }: CompletedButtonProps) {
 
       try {
         if (action === "add") {
-          await addToCompleted(userId, movie.id, rating);
+          await addToCompleted(currentUserId, movie.id, rating);
         } else {
-          await removeFromCompleted(userId, movie.id);
+          await removeFromCompleted(currentUserId, movie.id);
           if (pathname === "/completed") router.refresh();
         }
       } catch (error) {
