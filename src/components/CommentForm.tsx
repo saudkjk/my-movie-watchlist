@@ -2,16 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { addComment } from "@/lib/database";
+import { CommentFormProps } from "@/types/types";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { useRef } from "react";
 import { z } from "zod";
-
-type CommentFormProps = {
-  username: string;
-  targetUserId: string;
-  currentUserId: string;
-};
 
 const commentSchema = z.object({
   comment: z.string().min(1, "Comment cannot be empty"),

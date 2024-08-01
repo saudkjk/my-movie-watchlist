@@ -25,7 +25,7 @@ export const ImageHover = ({
     >
       <Image
         alt="movie poster"
-        className={`transform transition duration-500 ease-in-out group-hover:scale-[1.10] group-hover:brightness-75`}
+        className={`transform brightness-90 transition duration-500 ease-in-out sm:brightness-100 sm:group-hover:scale-[1.10] sm:group-hover:brightness-75`}
         fill
         src={imageUrl}
         sizes="(max-width: 480px) 35vw, (max-width: 768px) 30vw, (max-width: 992px) 25vw, (max-width: 1200px) 20vw, (max-width: 1600px) 15vw, 10vw"
@@ -34,7 +34,7 @@ export const ImageHover = ({
       />
       <div
         className={cn(
-          "absolute bottom-0 left-4 z-40 text-white opacity-0 transition duration-500 ease-out group-hover:opacity-100",
+          "absolute bottom-0 left-2 z-40 text-white transition duration-500 ease-out sm:left-4 sm:opacity-0 sm:group-hover:opacity-100",
           childrenClassName,
         )}
       >

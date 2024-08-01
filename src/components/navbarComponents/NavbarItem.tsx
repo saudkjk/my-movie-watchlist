@@ -1,12 +1,6 @@
 "use client";
+import { NavbarItemProps } from "@/types/types";
 import { usePathname, useSearchParams } from "next/navigation";
-
-type NavbarItemProps = {
-  title: string;
-  href: string;
-  path: string;
-  children?: React.ReactNode;
-};
 
 export default function NavbarItem({ title, href, path }: NavbarItemProps) {
   const pathname = usePathname();

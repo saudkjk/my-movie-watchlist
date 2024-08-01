@@ -31,7 +31,7 @@ export default function GenreNav() {
                 <ListItem
                   key={genre.id}
                   title={genre.name}
-                  href={`/genre?genre=${genre.name}&page=1`}
+                  href={`/genre?genre=${genre.name}`}
                 ></ListItem>
               ))}
             </ul>

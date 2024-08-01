@@ -14,7 +14,7 @@ export default async function Page() {
         {users &&
           users.map((user) => (
             <Link key={user.username} href={"/browse/" + user.username}>
-              <div className="block rounded-lg bg-white p-4 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
+              <div className="block justify-between rounded-lg border bg-white p-4 shadow-sm transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <div className="flex items-center space-x-4">
                   <Image
                     src={user.imageUrl}

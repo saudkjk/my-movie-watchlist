@@ -2,27 +2,7 @@
 import Image from "next/image";
 import DeleteComment from "./DeleteComment"; // Adjust the import path as needed
 import { getUserWatchlistComments } from "@/lib/database";
-
-type Comment = {
-  id: string;
-  userId: string;
-  targetUserId: string;
-  comment: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type User = {
-  username: string | null;
-  imageUrl: string;
-  id: string;
-};
-
-type CommentsProps = {
-  currentWatchlistUserId: string;
-  usersList: any;
-  currentUserId: string;
-};
+import { CommentsProps, User, Comment } from "@/types/types";
 
 export default async function DisplayComments({
   currentWatchlistUserId,

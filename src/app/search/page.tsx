@@ -1,33 +1,35 @@
 "use server";
-import DisplayMovies from "@/components/DisplayMovies";
-import { fetchMoviesByQuery } from "@/lib/API";
+import { fetchMoviesByQueryWithDbStatus } from "@/lib/API";
 import { auth } from "@clerk/nextjs/server";
-import PaginationControls from "@/components/PaginationControls";
 import PageTitle from "@/components/PageTitle";
+import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
 
 type PageProps = {
   searchParams: {
     query: string;
-    page: number;
   };
 };
 
 export default async function Page({ searchParams }: PageProps) {
   const query = searchParams.query || "";
-  const page = searchParams.page || 1;
 
   const currentUserId = await auth().userId;
-  const searchedMovies = await fetchMoviesByQuery(query, page);
+  const searchedMovies = await fetchMoviesByQueryWithDbStatus(
+    query,
+    1,
+    currentUserId!,
+  );
   return (
     <>
       {searchedMovies && searchedMovies.length > 0 && (
         <div>
           <PageTitle title={`Search results for: "${query}"`} />
-          <DisplayMovies
+          <DisplayInfiniteMovies
             movies={searchedMovies}
+            param={query}
+            fetchMoviesWithDbStatus={fetchMoviesByQueryWithDbStatus}
             currentUserId={currentUserId!}
           />
-          <PaginationControls />
         </div>
       )}
       {searchedMovies && searchedMovies.length === 0 && (

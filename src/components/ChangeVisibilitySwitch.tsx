@@ -3,14 +3,12 @@ import { changeVisibility } from "@/lib/database";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { ChangeVisibilitySwitchProps } from "@/types/types";
 
 export default function ChangeVisibilitySwitch({
   userId,
   watchListVisibility,
-}: {
-  userId: string;
-  watchListVisibility: boolean;
-}) {
+}: ChangeVisibilitySwitchProps) {
   const [visibility, setVisibility] = useState(watchListVisibility);
   const handleChangeVisibility = async () => {
     try {
@@ -24,7 +22,7 @@ export default function ChangeVisibilitySwitch({
 
   return (
     <>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center gap-2 mt-4">
         <Label htmlFor="watchlist-visibility">
           {visibility ? "Public" : "Private"}
         </Label>

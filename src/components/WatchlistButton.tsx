@@ -9,11 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
-
-type WatchlistButtonProps = {
-  currentUserId: string;
-  movie: any;
-};
+import { WatchlistButtonProps } from "@/types/types";
 
 export function WatchlistButton({
   currentUserId,
@@ -58,9 +54,9 @@ export function WatchlistButton({
           className="mr-1 inline-block cursor-pointer"
         >
           {!inWatchlist ? (
-            <BsPlusCircle className="text-3xl text-white" />
+            <BsPlusCircle className="text-2xl text-white sm:text-3xl" />
           ) : (
-            <BsCheckCircle className="text-3xl text-green-500" />
+            <BsCheckCircle className="text-2xl text-green-500 sm:text-3xl" />
           )}
         </div>
       </TooltipTrigger>

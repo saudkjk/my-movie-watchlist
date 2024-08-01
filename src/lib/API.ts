@@ -1,24 +1,24 @@
 // import 'server-only';
 'use server';
 
-import { updateWithDatabaseStatus } from "./database";
+import { updateWithDbStatus } from "./database";
 
 const API_KEY = process.env.API_KEY;
 
 
 
-export async function fetchMovies(genre: string, page: number) {
-  // get movies
-  const res = await fetch(
-    `https://api.themoviedb.org/3${genre === "toprated" ? "/movie/top_rated" : "/trending/movie/week"}?api_key=${API_KEY}&language=en-US&page=${page}`
-  );
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
+// export async function fetchMovies(genre: string, page: number) {
+//   // get movies
+//   const res = await fetch(
+//     `https://api.themoviedb.org/3${genre === "toprated" ? "/movie/top_rated" : "/trending/movie/week"}?api_key=${API_KEY}&language=en-US&page=${page}`
+//   );
+//   const data = await res.json();
+//   if (!res.ok) {
+//     throw new Error('Failed to fetch data');
+//   }
 
-  return data.results;
-}
+//   return data.results;
+// }
 
 export async function fetchMoviesByQuery(query: string, page: number) {
 
@@ -47,34 +47,18 @@ export async function fetchMoviesByQuery(query: string, page: number) {
 }
 
 
-export async function fetchMoviesTopTrendingUpdatedStatus(genre: string, page: number, currentUserId: string) {
+export async function fetchMoviesByQueryWithDbStatus(query: string, page: number, currentUserId: string) {
 
-  // get movies
-  const res = await fetch(
-    `https://api.themoviedb.org/3${genre === "toprated" ? "/movie/top_rated" : "/trending/movie/week"}?api_key=${API_KEY}&language=en-US&page=${page}`
-  );
-  const data = await res.json();
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-  // get runtime
-  const results = await Promise.all(
-    data.results.map(async (movie: any) => {
-      const movieRes = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${API_KEY}&language=en-US`
-      );
-      const movieData = await movieRes.json();
-      return {
-        ...movie,
-        runtime: movieData.runtime,
-      };
-    })
-  );
+  const results = await fetchMoviesByQuery(query, page);
+
   const updatedRes = currentUserId
-    ? await updateWithDatabaseStatus(String(currentUserId), results)
+    ? await updateWithDbStatus(String(currentUserId), results)
     : results;
   return updatedRes;
 }
+
+
+
 
 export async function fetchMoviesTopTrending(genre: string, page: number) {
 
@@ -104,6 +88,16 @@ export async function fetchMoviesTopTrending(genre: string, page: number) {
   return results;
 }
 
+export async function fetchMoviesTopTrendingWithDbStatus(genre: string, page: number, currentUserId: string) {
+
+  const results = await fetchMoviesTopTrending(genre, page);
+
+  const updatedRes = currentUserId
+    ? await updateWithDbStatus(String(currentUserId), results)
+    : results;
+  return updatedRes;
+}
+
 export async function fetchMoviesByGenre(genreId: number, page: number) {
   // get movies by genre
   const res = await fetch(
@@ -129,6 +123,16 @@ export async function fetchMoviesByGenre(genreId: number, page: number) {
   );
 
   return results;
+}
+
+export async function fetchMoviesByGenreWithDbStatus(genreId: string, page: number, currentUserId: string) {
+
+  const results = await fetchMoviesByGenre(Number(genreId), page);
+
+  const updatedRes = currentUserId
+    ? await updateWithDbStatus(String(currentUserId), results)
+    : results;
+  return updatedRes;
 }
 
 export async function fetchMoviesByIds(movies: any[]) {

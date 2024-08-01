@@ -6,12 +6,7 @@ import { WatchlistButton } from "@/components/WatchlistButton";
 import { CompletedButton } from "@/components/CompletedButton";
 
 import Link from "next/link";
-
-type MovieCardProps = {
-  currentUserId: string;
-  movie: any;
-  isLCP: boolean;
-};
+import { MovieCardProps } from "@/types/types";
 
 export default function MovieCard({
   movie,
@@ -23,9 +18,9 @@ export default function MovieCard({
   // const imageURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBgFZfYsQAAAAASUVORK5CYII="
 
   return (
-    <div className="m-1 flex h-80 w-60 p-3">
+    <div className="mt-1 flex h-56 w-44 p-2 sm:m-1 sm:h-80 sm:w-60">
       <ImageHover imageUrl={imageURL} isLCP={isLCP}>
-        <p className="text-xl font-bold">
+        <p className="text-xs font-bold sm:text-xl">
           <Link
             href={`https://www.google.com/search?q=${movie.title}&newwindow=1`}
             target="_blank"
@@ -34,7 +29,7 @@ export default function MovieCard({
             {movie.title}
           </Link>
         </p>
-        <p className="text-sm font-normal">
+        <p className="text-xs font-normal sm:text-sm">
           Duration: {movie.runtime ? `${movie.runtime} minutes` : "N/A"}
           <br />
           Rating: {movie.vote_average.toFixed(1)}

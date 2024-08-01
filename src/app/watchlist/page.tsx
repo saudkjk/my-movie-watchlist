@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/db";
 import React from "react";
 import { fetchMoviesByIds } from "@/lib/API";
-import { getVisibility, updateWithDatabaseStatus } from "@/lib/database";
+import { getVisibility } from "@/lib/database";
 import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
 import ChangeVisibilitySwitch from "@/components/ChangeVisibilitySwitch";

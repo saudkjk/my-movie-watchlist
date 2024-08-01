@@ -1,51 +1,62 @@
 "use server";
-import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
-import { fetchMoviesByGenre, fetchMoviesTopTrending } from "@/lib/API";
-import { updateWithDatabaseStatus } from "@/lib/database";
+import {
+  fetchMoviesByGenreWithDbStatus,
+  fetchMoviesTopTrendingWithDbStatus,
+} from "@/lib/API";
 import { auth } from "@clerk/nextjs/server";
-import genres from "@/lib/genres.json";
-import PaginationControls from "@/components/PaginationControls";
+import { genres } from "@/lib/genres.json";
 import { redirect } from "next/navigation";
+import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
 
 type PageProps = {
   searchParams: {
     genre: string;
-    page: number;
   };
 };
 
 export default async function Page({ searchParams }: PageProps) {
   const genre = searchParams.genre;
-  const page = searchParams.page;
 
   const currentUserId = await auth().userId;
 
-  let genreMovies;
-  let title;
+  let genreMovies, title;
+  let param = genre;
+  let fetchMoviesWithDbStatus = fetchMoviesTopTrendingWithDbStatus;
 
-  if (genre === "toprated") {
-    genreMovies = await fetchMoviesTopTrending("toprated", page);
-    title = "Top Rated";
-  } else if (genre === "trending") {
-    genreMovies = await fetchMoviesTopTrending("trending", page);
-    title = "Trending";
+  if (genre === "toprated" || genre === "trending") {
+    genreMovies = await fetchMoviesTopTrendingWithDbStatus(
+      genre,
+      1,
+      currentUserId!,
+    );
+    title = genre === "toprated" ? "Top Rated" : "Trending";
   } else {
     // Find the genre ID from the genre name
-    const genreId = genres.genres.find(
+    const genreId = genres.find(
       (g) => g.name.toLowerCase() === genre.toLowerCase(),
     )?.id;
     if (!genreId) redirect("/");
 
-    genreMovies = await fetchMoviesByGenre(genreId!, page);
+    genreMovies = await fetchMoviesByGenreWithDbStatus(
+      String(genreId),
+      1,
+      currentUserId!,
+    );
+    fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
+    param = String(genreId);
     title = genre.charAt(0).toUpperCase() + genre.slice(1);
   }
 
   return (
     <>
       <PageTitle title={title} />
-      <DisplayMovies movies={genreMovies} currentUserId={currentUserId!} />
-      <PaginationControls />
+      <DisplayInfiniteMovies
+        movies={genreMovies}
+        param={param}
+        fetchMoviesWithDbStatus={fetchMoviesWithDbStatus}
+        currentUserId={currentUserId!}
+      />
     </>
   );
 }

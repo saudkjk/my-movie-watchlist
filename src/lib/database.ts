@@ -172,7 +172,7 @@ export async function isLiked(userId: string, movieIds: number[]) {
     }
 }
 
-export async function updateWithDatabaseStatus(userId: string, movies: any[]) {
+export async function updateWithDbStatus(userId: string, movies: any[]) {
     const movieIds = movies.map(movie => movie.id);
 
     try {
@@ -207,7 +207,7 @@ export async function changeVisibility(userId: string) {
             userSettings = await prisma.userSettings.create({
                 data: {
                     userId: userId,
-                    watchlistVisibility: "private" 
+                    watchlistVisibility: "private"
                 },
                 select: { watchlistVisibility: true }
             });
@@ -239,7 +239,7 @@ export async function getVisibility(userId: string) {
             userSettings = await prisma.userSettings.create({
                 data: {
                     userId: userId,
-                    watchlistVisibility: "private" 
+                    watchlistVisibility: "private"
                 },
                 select: { watchlistVisibility: true }
             });

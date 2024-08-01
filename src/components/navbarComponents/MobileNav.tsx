@@ -9,8 +9,8 @@ import {
 
 const links = [
   { path: "/", name: "Home" },
-  { path: "/genre?genre=trending&page=1", name: "Trending" },
-  { path: "/genre?genre=toprated&page=1", name: "Top Rated" },
+  { path: "/genre?genre=trending", name: "Trending" },
+  { path: "/genre?genre=toprated", name: "Top Rated" },
   { path: "/browse", name: "Browse Watchlists" },
   { path: "/watchlist", name: "Watchlist" },
   { path: "/completed", name: "Completed" },

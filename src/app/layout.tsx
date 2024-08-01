@@ -35,7 +35,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <main className="container mx-auto">{children}</main>
+            <main className="px-4 py-4 sm:container sm:mx-auto">
+              {children}
+            </main>
           </ThemeProvider>
         </body>
       </html>
