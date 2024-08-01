@@ -1,12 +1,18 @@
 "use server";
-import DisplayMovies from "@/components/DisplayMovies";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
+// import DisplayMovies from "@/components/DisplayMovies";
 import PageTitle from "@/components/PageTitle";
 import { fetchMoviesTopTrending } from "@/lib/API";
 import { auth } from "@clerk/nextjs/server";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
+const DisplayMovies = dynamic(() => import("@/components/DisplayMovies"), {
+  loading: () => <MovieCardSkeleton numberOfSkeletons={10} />,
+});
+
 export default async function Page() {
-  const currentUserId = await auth().userId;
+  const currentUserId = (await auth().userId) || "";
   const trendingMovies = await fetchMoviesTopTrending("fetchTrending", 1);
   const topRatedMovies = await fetchMoviesTopTrending("fetchTopRated", 1);
 
@@ -21,7 +27,7 @@ export default async function Page() {
           See all
         </Link>
       </div>
-      <DisplayMovies movies={trendingMovies} currentUserId={currentUserId!} />
+      <DisplayMovies movies={trendingMovies} currentUserId={currentUserId} />
 
       <div className="flex gap-2">
         <PageTitle title="Top Rated" />
@@ -32,7 +38,7 @@ export default async function Page() {
           See all
         </Link>
       </div>
-      <DisplayMovies movies={topRatedMovies} currentUserId={currentUserId!} />
+      <DisplayMovies movies={topRatedMovies} currentUserId={currentUserId} />
     </>
   );
 }

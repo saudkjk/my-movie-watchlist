@@ -47,23 +47,26 @@ export function WatchlistButton({
       <TooltipTrigger asChild>
         <div
           onClick={() =>
-            !inWatchlist
-              ? handleUpdateWatchlist("add")
-              : handleUpdateWatchlist("remove")
+            inWatchlist
+              ? handleUpdateWatchlist("remove")
+              : handleUpdateWatchlist("add")
           }
           className="mr-1 inline-block cursor-pointer"
+          aria-label={
+            inWatchlist ? "Remove from watchlist" : "Add to watchlist"
+          }
         >
-          {!inWatchlist ? (
-            <BsPlusCircle className="text-2xl text-white sm:text-3xl" />
-          ) : (
+          {inWatchlist ? (
             <BsCheckCircle className="text-2xl text-green-500 sm:text-3xl" />
+          ) : (
+            <BsPlusCircle className="text-2xl text-white sm:text-3xl" />
           )}
         </div>
       </TooltipTrigger>
       <TooltipContent
         className={`transform translate-x-${inWatchlist ? "16" : "11"}`}
       >
-        {!inWatchlist ? <p>Add to watchlist</p> : <p>Remove from watchlist</p>}
+        {inWatchlist ? <p>Remove from watchlist</p> : <p>Add to watchlist</p>}
       </TooltipContent>
     </Tooltip>
   );

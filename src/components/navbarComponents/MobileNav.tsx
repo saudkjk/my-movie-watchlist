@@ -27,7 +27,7 @@ export default async function MobileNav({ className }: { className?: string }) {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="flex w-[220px] flex-col gap-1 text-center sm:w-[300px] sm:text-left"
+          className="flex w-[220px] flex-col gap-3 text-center sm:w-[300px] sm:gap-1 sm:text-left"
         >
           {links.map((link) => (
             <SheetClose asChild key={link.path}>

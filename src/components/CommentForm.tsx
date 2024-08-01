@@ -6,7 +6,9 @@ import { CommentFormProps } from "@/types/types";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { useRef } from "react";
+import { useFormStatus } from "react-dom";
 import { z } from "zod";
+import CommentButton from "./CommentButton";
 
 const commentSchema = z.object({
   comment: z.string().min(1, "Comment cannot be empty"),
@@ -54,7 +56,7 @@ export default function CommentSection({
         />
         {isSignedIn ? (
           <div className="mt-2 flex justify-end gap-2">
-            <Button type="submit">Comment</Button>
+            <CommentButton />
           </div>
         ) : (
           <SignInButton

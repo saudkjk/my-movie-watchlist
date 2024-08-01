@@ -13,24 +13,24 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const query = searchParams.query || "";
 
-  const currentUserId = await auth().userId;
+  const currentUserId = (await auth().userId) || "";
   const searchedMovies = await fetchMoviesByQueryWithDbStatus(
     query,
     1,
-    currentUserId!,
+    currentUserId,
   );
   return (
     <>
       {searchedMovies && searchedMovies.length > 0 && (
-        <div>
+        <>
           <PageTitle title={`Search results for: "${query}"`} />
           <DisplayInfiniteMovies
             movies={searchedMovies}
             param={query}
             fetchMoviesWithDbStatus={fetchMoviesByQueryWithDbStatus}
-            currentUserId={currentUserId!}
+            currentUserId={currentUserId}
           />
-        </div>
+        </>
       )}
       {searchedMovies && searchedMovies.length === 0 && (
         <PageTitle title="No Results" />

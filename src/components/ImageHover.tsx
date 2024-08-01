@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { ImageHoverProps } from "@/types/types";
 
 export const ImageHover = ({
   imageUrl,
@@ -9,13 +10,7 @@ export const ImageHover = ({
   childrenClassName,
   className,
   isLCP,
-}: {
-  imageUrl: string;
-  children: React.ReactNode | string;
-  childrenClassName?: string;
-  className?: string;
-  isLCP?: boolean;
-}) => {
+}: ImageHoverProps) => {
   return (
     <div
       className={cn(

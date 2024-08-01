@@ -23,13 +23,13 @@ export type Movie = {
 
 export type WatchlistButtonProps = {
     currentUserId: string;
-    movie: any;
+    movie: Movie;
 };
 
 
 export type MovieCardProps = {
     currentUserId: string;
-    movie: any;
+    movie: Movie;
     isLCP: boolean;
 };
 
@@ -39,7 +39,7 @@ export type ImageHoverProps = {
     children: React.ReactNode | string;
     childrenClassName?: string;
     className?: string;
-    isLCP?: boolean;
+    isLCP: boolean;
 }
 
 
@@ -65,14 +65,14 @@ export type User = {
 
 export type CommentsProps = {
     currentWatchlistUserId: string;
-    usersList: any;
+    usersList: User[];
     currentUserId: string;
 };
 
 
 export type CompletedButtonProps = {
     currentUserId: string;
-    movie: any;
+    movie: Movie;
 };
 
 
@@ -100,3 +100,9 @@ export type Genre = {
     id: number;
     name: string;
 };
+
+
+export type UserComment = {
+    user: User;
+    comment: Comment;
+}

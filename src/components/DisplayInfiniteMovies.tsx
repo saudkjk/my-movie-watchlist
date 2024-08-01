@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import MovieCard from "./MovieCard";
 import Image from "next/image";
-import { DisplayInfiniteMoviesProps } from "@/types/types";
+import { DisplayInfiniteMoviesProps, Movie } from "@/types/types";
 let page = 2;
 
 export default function DisplayInfiniteMovies({
@@ -13,23 +13,24 @@ export default function DisplayInfiniteMovies({
   currentUserId,
 }: DisplayInfiniteMoviesProps) {
   const { ref, inView } = useInView();
-  const [data, setData] = useState<any[]>(movies); 
+  const [data, setData] = useState<Movie[]>(movies);
+
+  const fetchMoreMovies = useCallback(async () => {
+    const newMovies = await fetchMoviesWithDbStatus(param, page, currentUserId);
+    setData([...data, ...newMovies]);
+    page += 1;
+  }, [param, currentUserId, fetchMoviesWithDbStatus, data]);
 
   useEffect(() => {
     if (inView) {
-      const delay = 300;
-      const timeoutId = setTimeout(() => {
-        fetchMoviesWithDbStatus(param, page, currentUserId).then((res) => {
-          setData([...data, ...res]);
-          page += 1;
-        });
-      }, delay);
+      const delay = 200;
+      const timeoutId = setTimeout(() => fetchMoreMovies(), delay);
       return () => clearTimeout(timeoutId);
     }
-  }, [inView, param, currentUserId, fetchMoviesWithDbStatus, data]);
+  }, [inView]);
 
   return (
-    <div>
+    <>
       <div className="flex flex-wrap justify-center">
         {data.map((movie, index) => (
           <div key={movie.id}>
@@ -41,18 +42,15 @@ export default function DisplayInfiniteMovies({
           </div>
         ))}
       </div>
-
-      <section className="flex w-full items-center justify-center">
-        <div ref={ref}>
-          <Image
-            src="/spinner.svg"
-            alt="spinner"
-            width={56}
-            height={56}
-            className="mb-10 mt-5 object-contain"
-          />
-        </div>
-      </section>
-    </div>
+      <div ref={ref} className="flex w-full items-center justify-center">
+        <Image
+          src="/spinner.svg"
+          alt="spinner"
+          width={56}
+          height={56}
+          className="mb-10 mt-5 object-contain"
+        />
+      </div>
+    </>
   );
 }

@@ -9,7 +9,7 @@ export default async function DisplayMovies({
   currentUserId,
 }: DisplayMoviesProps) {
   const updatedMovies = currentUserId
-    ? await updateWithDbStatus(String(currentUserId), movies)
+    ? await updateWithDbStatus(currentUserId, movies)
     : movies;
   return (
     <div className="flex flex-wrap justify-center">

@@ -12,9 +12,9 @@ export default async function MovieCardSkeleton({
       {Array.from({ length: numberOfSkeletons }).map((_, index) => (
         <div
           key={index}
-          className="mt-1 flex h-56 w-44 flex-col p-2 sm:m-1 sm:h-80 sm:w-60 sm:space-y-4 sm:p-3"
+          className="mt-1 flex h-56 w-44 flex-col p-2 sm:m-1 sm:my-4 sm:h-80 sm:w-60 sm:p-0"
         >
-          <Skeleton className="h-56 w-40 sm:h-80 sm:w-52" />
+          <Skeleton className="h-56 w-40 sm:h-80 sm:w-56" />
         </div>
       ))}
     </div>

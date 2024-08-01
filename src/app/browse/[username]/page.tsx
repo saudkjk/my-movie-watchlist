@@ -1,7 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { prisma } from "@/db";
 import React from "react";
 import { fetchMoviesByIds } from "@/lib/API";
 import DisplayMovies from "@/components/DisplayMovies";
@@ -10,6 +9,7 @@ import DisplayComments from "@/components/DisplayComments";
 import CommentForm from "@/components/CommentForm";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import PageTitle from "@/components/PageTitle";
+import { getWatchlistMoviesIds } from "@/lib/database";
 
 type PagePropss = {
   params: {
@@ -19,21 +19,19 @@ type PagePropss = {
 
 export default async function Page({ params }: PagePropss) {
   const username = params.username;
-  const currentUserId = await auth().userId;
+  const currentUserId = (await auth().userId) || "";
 
   // get user id and image from username
-  const usersList = await clerkClient.users.getUserList();
-  const user = usersList.data.find((user) => user.username === username);
-  const currentWatchlistUserId = user ? user.id : null;
-  const imageUrl = user ? user.imageUrl : null;
+  const usersList = (await clerkClient.users.getUserList()).data;
+  const user = usersList.find((user) => user.username === username);
+  const currentWatchlistUserId = user ? user.id : "";
+  const imageUrl = user ? user.imageUrl : "";
 
   if (!currentWatchlistUserId) redirect("/browse");
 
-  const watchlistMoviesIds = await prisma.watchlist.findMany({
-    where: {
-      userId: currentWatchlistUserId,
-    },
-  });
+  const watchlistMoviesIds = await getWatchlistMoviesIds(
+    currentWatchlistUserId,
+  );
   const movies = await fetchMoviesByIds(watchlistMoviesIds);
 
   return (
@@ -52,16 +50,19 @@ export default async function Page({ params }: PagePropss) {
         </div>
         <PageTitle title={`${username}'s Watchlist: ${movies.length}`} />
       </div>
-      <DisplayMovies movies={movies} currentUserId={currentUserId!} />
+
+      <DisplayMovies movies={movies} currentUserId={currentUserId} />
+
       <CommentForm
         username={username}
         targetUserId={currentWatchlistUserId}
-        currentUserId={currentUserId!}
+        currentUserId={currentUserId}
       />
+
       <DisplayComments
         currentWatchlistUserId={currentWatchlistUserId}
         usersList={usersList}
-        currentUserId={currentUserId!}
+        currentUserId={currentUserId}
       />
     </>
   );

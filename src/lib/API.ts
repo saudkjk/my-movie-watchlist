@@ -1,11 +1,6 @@
-// import 'server-only';
 'use server';
-
 import { updateWithDbStatus } from "./database";
-
 const API_KEY = process.env.API_KEY;
-
-
 
 export async function fetchMoviesByQuery(query: string, page: number) {
 
@@ -33,7 +28,6 @@ export async function fetchMoviesByQuery(query: string, page: number) {
   return results;
 }
 
-
 export async function fetchMoviesByQueryWithDbStatus(query: string, page: number, currentUserId: string) {
 
   const results = await fetchMoviesByQuery(query, page);
@@ -43,9 +37,6 @@ export async function fetchMoviesByQueryWithDbStatus(query: string, page: number
     : results;
   return updatedRes;
 }
-
-
-
 
 export async function fetchMoviesTopTrending(genre: string, page: number) {
 
@@ -70,7 +61,6 @@ export async function fetchMoviesTopTrending(genre: string, page: number) {
       };
     })
   );
-
 
   return results;
 }

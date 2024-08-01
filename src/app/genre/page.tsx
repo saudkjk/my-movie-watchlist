@@ -7,7 +7,16 @@ import {
 import { auth } from "@clerk/nextjs/server";
 import genresData from "@/lib/genres.json";
 import { redirect } from "next/navigation";
-import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
+// import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
+import dynamic from "next/dynamic";
+
+const DisplayInfiniteMovies = dynamic(
+  () => import("@/components/DisplayInfiniteMovies"),
+  {
+    loading: () => <MovieCardSkeleton numberOfSkeletons={10} />,
+  },
+);
 
 type PageProps = {
   searchParams: {
@@ -20,7 +29,7 @@ const movieGenres = genresData.genres;
 export default async function Page({ searchParams }: PageProps) {
   const genre = searchParams.genre;
 
-  const currentUserId = await auth().userId;
+  const currentUserId = (await auth().userId) || "";
 
   let genreMovies, title;
   let param = genre;
@@ -30,7 +39,7 @@ export default async function Page({ searchParams }: PageProps) {
     genreMovies = await fetchMoviesTopTrendingWithDbStatus(
       genre,
       1,
-      currentUserId!,
+      currentUserId,
     );
     title = genre === "toprated" ? "Top Rated" : "Trending";
   } else {
@@ -43,7 +52,7 @@ export default async function Page({ searchParams }: PageProps) {
     genreMovies = await fetchMoviesByGenreWithDbStatus(
       String(genreId),
       1,
-      currentUserId!,
+      currentUserId,
     );
     fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
     param = String(genreId);
@@ -57,7 +66,7 @@ export default async function Page({ searchParams }: PageProps) {
         movies={genreMovies}
         param={param}
         fetchMoviesWithDbStatus={fetchMoviesWithDbStatus}
-        currentUserId={currentUserId!}
+        currentUserId={currentUserId}
       />
     </>
   );

@@ -12,7 +12,8 @@ export async function addComment(userId: string, targetUserId: string, comment: 
                 comment: comment,
             }
         });
-        revalidatePath(`/browse/${username}`);
+        // revalidatePath(`/browse/${username}`);
+        revalidatePath('/');
         return { status: 200, message: "Added comment successfully" };
     } catch (error) {
         console.error('Error adding comment:', error);
@@ -27,7 +28,6 @@ export async function removeComment(commentId: string) {
                 id: commentId,
             }
         });
-        revalidatePath('/');
         return { status: 200, message: "Removed comment successfully" };
     } catch (error) {
         console.error('Error removing comment:', error);
@@ -172,21 +172,62 @@ export async function isLiked(userId: string, movieIds: number[]) {
     }
 }
 
+// export async function updateWithDbStatus(userId: string, movies: any[]) {
+//     const movieIds = movies.map(movie => movie.id);
+
+//     try {
+//         const [watchlistStatuses, completedStatuses, likedStatuses] = await Promise.all([
+//             inWatchlist(userId, movieIds),
+//             inCompleted(userId, movieIds),
+//             isLiked(userId, movieIds),
+//         ]);
+
+//         return movies.map((movie, index) => ({
+//             ...movie,
+//             inWatchlist: watchlistStatuses[index],
+//             inCompleted: completedStatuses[index],
+//             isLiked: likedStatuses[index],
+//         }));
+//     } catch (error) {
+//         console.error('Error checking database status:', error);
+//         throw error;
+//     }
+// }
+
+async function fetchStatuses(userId: string, movieIds: number[]) {
+    const [watchlist, completed, liked] = await Promise.all([
+        prisma.watchlist.findMany({
+            where: { userId, movieId: { in: movieIds.map(String) } },
+            select: { movieId: true }
+        }),
+        prisma.completed.findMany({
+            where: { userId, movieId: { in: movieIds.map(String) } },
+            select: { movieId: true }
+        }),
+        prisma.completed.findMany({
+            where: { userId, movieId: { in: movieIds.map(String) }, rating: 'liked' },
+            select: { movieId: true }
+        })
+    ]);
+
+    const watchlistSet = new Set(watchlist.map(item => Number(item.movieId)));
+    const completedSet = new Set(completed.map(item => Number(item.movieId)));
+    const likedSet = new Set(liked.map(item => Number(item.movieId)));
+
+    return { watchlistSet, completedSet, likedSet };
+}
+
 export async function updateWithDbStatus(userId: string, movies: any[]) {
     const movieIds = movies.map(movie => movie.id);
 
     try {
-        const [watchlistStatuses, completedStatuses, likedStatuses] = await Promise.all([
-            inWatchlist(userId, movieIds),
-            inCompleted(userId, movieIds),
-            isLiked(userId, movieIds),
-        ]);
+        const { watchlistSet, completedSet, likedSet } = await fetchStatuses(userId, movieIds);
 
-        return movies.map((movie, index) => ({
+        return movies.map(movie => ({
             ...movie,
-            inWatchlist: watchlistStatuses[index],
-            inCompleted: completedStatuses[index],
-            isLiked: likedStatuses[index],
+            inWatchlist: watchlistSet.has(movie.id),
+            inCompleted: completedSet.has(movie.id),
+            isLiked: likedSet.has(movie.id),
         }));
     } catch (error) {
         console.error('Error checking database status:', error);
@@ -282,5 +323,35 @@ export async function getUsersWithPublicVisibility() {
     } catch (error) {
         console.error('Error retrieving users with public visibility:', error);
         return { status: 500, message: 'Failed to retrieve users' };
+    }
+}
+
+export async function getCompletedMoviesIds(userId: string) {
+    try {
+        const completedMoviesIds = await prisma.completed.findMany({
+            where: {
+                userId,
+            },
+            select: { movieId: true },
+        });
+        return completedMoviesIds;
+    } catch (error) {
+        console.error("Error fetching completed movies IDs:", error);
+        throw new Error("Failed to fetch completed movies IDs");
+    }
+}
+
+export async function getWatchlistMoviesIds(userId: string) {
+    try {
+        const watchlistMoviesIds = await prisma.watchlist.findMany({
+            where: {
+                userId,
+            },
+            select: { movieId: true },
+        });
+        return watchlistMoviesIds;
+    } catch (error) {
+        console.error("Error fetching watchlist movies IDs:", error);
+        throw new Error("Failed to fetch watchlist movies IDs");
     }
 }

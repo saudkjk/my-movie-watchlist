@@ -14,19 +14,15 @@ export default async function Page() {
         {users &&
           users.map((user) => (
             <Link key={user.username} href={"/browse/" + user.username}>
-              <div className="block justify-between rounded-lg border bg-white p-4 shadow-sm transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
-                <div className="flex items-center space-x-4">
-                  <Image
-                    src={user.imageUrl}
-                    alt={user.username!}
-                    width={50}
-                    height={50}
-                    className="rounded-full"
-                  />
-                  <div className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                    {user.username}
-                  </div>
-                </div>
+              <div className="flex items-center gap-4 rounded-lg border bg-white p-4 text-lg font-semibold shadow-sm transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <Image
+                  src={user.imageUrl}
+                  alt={user.username!}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+                {user.username}
               </div>
             </Link>
           ))}

@@ -8,23 +8,19 @@ import { CompletedButton } from "@/components/CompletedButton";
 import Link from "next/link";
 import { MovieCardProps } from "@/types/types";
 
-export default function MovieCard({
-  movie,
-  currentUserId,
-  isLCP,
-}: MovieCardProps) {
+function MovieCard({ movie, currentUserId, isLCP }: MovieCardProps) {
   let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;
   if (imageURL.endsWith("null")) imageURL = "/posterPlaceHolder.jpg";
-  // const imageURL = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBgFZfYsQAAAAASUVORK5CYII="
 
   return (
     <div className="mt-1 flex h-56 w-44 p-2 sm:m-1 sm:h-80 sm:w-60">
       <ImageHover imageUrl={imageURL} isLCP={isLCP}>
         <p className="text-xs font-bold sm:text-xl">
           <Link
-            href={`https://www.google.com/search?q=${movie.title}&newwindow=1`}
+            href={`https://www.google.com/search?q=${movie.title} movie&newwindow=1`}
             target="_blank"
             className="hover:text-emerald-400"
+            aria-label={`Search ${movie.title} on Google`}
           >
             {movie.title}
           </Link>
@@ -44,3 +40,5 @@ export default function MovieCard({
     </div>
   );
 }
+// stops re-rendering when infinitely scrolling through movies
+export default React.memo(MovieCard);

@@ -59,6 +59,7 @@ export function CompletedButton({
             <div
               className="inline-block cursor-pointer"
               onClick={() => handleToggleCompleted("remove")}
+              aria-label="Remove from completed"
             >
               {isLiked ? (
                 <BsHandThumbsUp className="text-2xl text-green-500 sm:text-3xl" />
@@ -74,19 +75,22 @@ export function CompletedButton({
       ) : (
         <Popover>
           <PopoverTrigger asChild>
-            <div className="inline-block cursor-pointer">
+            <div
+              className="inline-block cursor-pointer"
+              aria-label="Add to completed"
+            >
               <BsHandThumbsUp className="text-2xl text-white sm:text-3xl" />
             </div>
           </PopoverTrigger>
           <PopoverContent className="m-1 max-w-[70px] p-1">
-            <div className="flex cursor-pointer justify-center">
+            <div className="flex cursor-pointer justify-center text-2xl text-black dark:text-white sm:text-3xl">
               <BsHandThumbsUp
                 onClick={() => handleToggleCompleted("add", "liked")}
-                className="text-2xl text-black dark:text-white sm:text-3xl"
+                aria-label="Mark as liked"
               />
               <BsHandThumbsDown
                 onClick={() => handleToggleCompleted("add", "disliked")}
-                className="text-2xl text-black dark:text-white sm:text-3xl"
+                aria-label="Mark as disliked"
               />
             </div>
           </PopoverContent>
