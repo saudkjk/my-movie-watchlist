@@ -56,7 +56,7 @@ export function CompletedButton({
       {inCompleted ? (
         <Tooltip delayDuration={0}>
           <TooltipTrigger asChild>
-            <div
+            <button
               className="inline-block cursor-pointer"
               onClick={() => handleToggleCompleted("remove")}
               aria-label="Remove from completed"
@@ -66,7 +66,7 @@ export function CompletedButton({
               ) : (
                 <BsHandThumbsDown className="text-2xl text-red-500 sm:text-3xl" />
               )}
-            </div>
+            </button>
           </TooltipTrigger>
           <TooltipContent>
             <p>Remove from completed</p>
@@ -75,15 +75,15 @@ export function CompletedButton({
       ) : (
         <Popover>
           <PopoverTrigger asChild>
-            <div
+            <button
               className="inline-block cursor-pointer"
               aria-label="Add to completed"
             >
               <BsHandThumbsUp className="text-2xl text-white sm:text-3xl" />
-            </div>
+            </button>
           </PopoverTrigger>
           <PopoverContent className="m-1 max-w-[70px] p-1">
-            <div className="flex cursor-pointer justify-center text-2xl text-black dark:text-white sm:text-3xl">
+            <button className="flex cursor-pointer justify-center text-2xl text-black dark:text-white sm:text-3xl">
               <BsHandThumbsUp
                 onClick={() => handleToggleCompleted("add", "liked")}
                 aria-label="Mark as liked"
@@ -92,7 +92,7 @@ export function CompletedButton({
                 onClick={() => handleToggleCompleted("add", "disliked")}
                 aria-label="Mark as disliked"
               />
-            </div>
+            </button>
           </PopoverContent>
         </Popover>
       )}

@@ -20,7 +20,6 @@ function MovieCard({ movie, currentUserId, isLCP }: MovieCardProps) {
             href={`https://www.google.com/search?q=${movie.title} movie&newwindow=1`}
             target="_blank"
             className="hover:text-emerald-400"
-            aria-label={`Search ${movie.title} on Google`}
           >
             {movie.title}
           </Link>

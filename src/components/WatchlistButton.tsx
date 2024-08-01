@@ -45,7 +45,7 @@ export function WatchlistButton({
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <div
+        <button
           onClick={() =>
             inWatchlist
               ? handleUpdateWatchlist("remove")
@@ -61,7 +61,7 @@ export function WatchlistButton({
           ) : (
             <BsPlusCircle className="text-2xl text-white sm:text-3xl" />
           )}
-        </div>
+        </button>
       </TooltipTrigger>
       <TooltipContent
         className={`transform translate-x-${inWatchlist ? "16" : "11"}`}

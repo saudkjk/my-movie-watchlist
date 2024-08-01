@@ -21,7 +21,7 @@ export default async function MobileNav({ className }: { className?: string }) {
     <div className={`ml-2 mt-1 flex justify-start ${className}`}>
       <Sheet>
         <SheetTrigger asChild>
-          <button>
+          <button aria-label="Open navigation">
             <MdOutlineMenu className="ml-2 text-3xl" />
           </button>
         </SheetTrigger>
