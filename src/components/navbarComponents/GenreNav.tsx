@@ -1,5 +1,5 @@
 "use client";
-import genres from "@/lib/genres.json";
+import genresData from "@/lib/genres.json";
 
 import {
   NavigationMenu,
@@ -17,6 +17,8 @@ type Genre = {
   name: string;
 };
 
+const movieGenres = genresData.genres;
+
 export default function GenreNav() {
   return (
     <NavigationMenu className="z-50">
@@ -27,7 +29,7 @@ export default function GenreNav() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[320px] grid-cols-3 gap-3 p-4 md:w-[370px]">
-              {genres.genres.map((genre: Genre) => (
+              {movieGenres.map((genre: Genre) => (
                 <ListItem
                   key={genre.id}
                   title={genre.name}

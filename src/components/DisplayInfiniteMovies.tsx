@@ -26,7 +26,7 @@ export default function DisplayInfiniteMovies({
       }, delay);
       return () => clearTimeout(timeoutId);
     }
-  }, [inView]);
+  }, [inView, param, currentUserId, fetchMoviesWithDbStatus, data]);
 
   return (
     <div>

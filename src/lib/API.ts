@@ -7,19 +7,6 @@ const API_KEY = process.env.API_KEY;
 
 
 
-// export async function fetchMovies(genre: string, page: number) {
-//   // get movies
-//   const res = await fetch(
-//     `https://api.themoviedb.org/3${genre === "toprated" ? "/movie/top_rated" : "/trending/movie/week"}?api_key=${API_KEY}&language=en-US&page=${page}`
-//   );
-//   const data = await res.json();
-//   if (!res.ok) {
-//     throw new Error('Failed to fetch data');
-//   }
-
-//   return data.results;
-// }
-
 export async function fetchMoviesByQuery(query: string, page: number) {
 
   // get movies
