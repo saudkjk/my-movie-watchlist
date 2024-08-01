@@ -13,8 +13,8 @@ const DisplayMovies = dynamic(() => import("@/components/DisplayMovies"), {
 
 export default async function Page() {
   const currentUserId = (await auth().userId) || "";
-  const trendingMovies = await fetchMoviesTopTrending("fetchTrending", 1);
-  const topRatedMovies = await fetchMoviesTopTrending("fetchTopRated", 1);
+  const trendingMovies = await fetchMoviesTopTrending("trending", 1);
+  const topRatedMovies = await fetchMoviesTopTrending("toprated", 1);
 
   return (
     <>
