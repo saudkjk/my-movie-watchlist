@@ -1,4 +1,4 @@
-"use server";
+"use client";
 import React from "react";
 import { ImageHover } from "./ImageHover";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,7 +13,7 @@ type MovieCardProps = {
   isLCP: boolean;
 };
 
-export default async function MovieCard({
+export default function MovieCard({
   movie,
   currentUserId,
   isLCP,
