@@ -7,16 +7,7 @@ import {
 import { auth } from "@clerk/nextjs/server";
 import genresData from "@/lib/genres.json";
 import { redirect } from "next/navigation";
-// import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
-import MovieCardSkeleton from "@/components/MovieCardSkeleton";
-import dynamic from "next/dynamic";
-
-const DisplayInfiniteMovies = dynamic(
-  () => import("@/components/DisplayInfiniteMovies"),
-  {
-    loading: () => <MovieCardSkeleton numberOfSkeletons={10} />,
-  },
-);
+import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
 
 type PageProps = {
   searchParams: {
