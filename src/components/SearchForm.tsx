@@ -18,12 +18,9 @@ export default function SearchForm() {
 
   const handleSearch = useDebouncedCallback((searchQuery: string) => {
     const validationResult = searchSchema.safeParse({ query: searchQuery });
-    const params = new URLSearchParams();
 
-    if (validationResult.success) {
-      params.set("query", searchQuery);
-      params.set("page", "1");
-    }
+    const params = new URLSearchParams();
+    if (validationResult.success) params.set("query", searchQuery);
 
     router.replace(`/search?${params.toString()}`);
   }, 400);

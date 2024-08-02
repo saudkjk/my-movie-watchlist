@@ -6,8 +6,6 @@ import { redirect } from 'next/navigation';
 import { User } from '@/types/types';
 import { z } from "zod";
 
-
-
 export async function addComment(
     userId: string,
     targetUserId: string,
@@ -15,15 +13,11 @@ export async function addComment(
     formData: FormData,
 ) {
     const commentSchema = z.object({
-        comment: z.string().min(1, "Comment cannot be empty"),
+        comment: z.string().trim().min(1, "Comment cannot be empty"),
     });
-
-
     try {
-
         const comment = formData.get("comment");
         const validation = commentSchema.safeParse({ comment });
-
 
         if (!validation.success) {
             return { status: 400, message: validation.error.errors.map(err => err.message).join(", ") };
@@ -44,14 +38,16 @@ export async function addComment(
     }
 }
 
-export async function removeComment(commentId: string) {
+export async function removeComment(previousState: any,
+    commentId: string,) {
     try {
         await prisma.comments.delete({
             where: {
                 id: commentId,
             }
         });
-        return { status: 200, message: "Removed comment successfully" };
+
+        revalidatePath("/");
     } catch (error) {
         console.error('Error removing comment:', error);
         return { status: 500, message: 'Failed to remove comment' };

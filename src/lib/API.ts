@@ -1,6 +1,6 @@
 'use server';
 import { redirect } from "next/navigation";
-import genresData from "@/lib/genres.json";
+import genres from "@/lib/genres.json";
 import { updateWithDbStatus } from "./database";
 const API_KEY = process.env.API_KEY;
 
@@ -140,7 +140,7 @@ export async function fetchMoviesByIds(movies: any[]) {
 }
 
 
-const movieGenres = genresData.genres;
+const movieGenres = genres.genres;
 
 
 export async function fetchMoviesAndPageInfo(genre: string, currentUserId: string) {
@@ -155,18 +155,13 @@ export async function fetchMoviesAndPageInfo(genre: string, currentUserId: strin
     title = genre === "toprated" ? "Top Rated" : "Trending";
     param = genre;
     fetchMoviesWithDbStatus = fetchMoviesTopTrendingWithDbStatus;
-  } else {
+  }
+  else {
     // Find the genre ID from the genre name
-    const genreId = movieGenres.find(
-      (g) => g.name.toLowerCase() === genre.toLowerCase()
-    )?.id;
+    const genreId = movieGenres.find((g) => g.name.toLowerCase() === genre.toLowerCase())?.id;
     if (!genreId) redirect("/");
 
-    genreMovies = await fetchMoviesByGenreWithDbStatus(
-      String(genreId),
-      1,
-      currentUserId
-    );
+    genreMovies = await fetchMoviesByGenreWithDbStatus(String(genreId), 1, currentUserId);
     fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
     param = String(genreId);
     title = genre.charAt(0).toUpperCase() + genre.slice(1);

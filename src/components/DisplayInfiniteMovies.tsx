@@ -29,6 +29,10 @@ export default function DisplayInfiniteMovies({
     }
   }, [inView]);
 
+  useEffect(() => {
+    setData(movies);
+  }, [movies]);
+
   return (
     <>
       <div className="flex flex-wrap justify-center">

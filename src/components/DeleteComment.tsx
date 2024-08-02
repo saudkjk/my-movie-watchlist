@@ -1,25 +1,17 @@
 "use client";
 import { removeComment } from "@/lib/database";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useActionState } from "react";
 
 export default function DeleteComment({ commentId }: { commentId: string }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
-
-  const handleDelete = async () => {
-    setIsLoading(true);
-    await removeComment(commentId);
-    router.refresh();
-  };
+  const [state, action, isPending] = useActionState(removeComment, null);
 
   return (
     <button
-      onClick={handleDelete}
+      onClick={() => action(commentId)}
       className="self-end text-red-500"
-      disabled={isLoading}
+      disabled={isPending}
     >
-      {isLoading ? "Deleting..." : "Delete"}
+      {isPending ? "Deleting..." : "Delete"}
     </button>
   );
 }

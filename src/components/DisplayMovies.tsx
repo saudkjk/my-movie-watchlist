@@ -11,6 +11,7 @@ export default async function DisplayMovies({
   const updatedMovies = currentUserId
     ? await updateWithDbStatus(currentUserId, movies)
     : movies;
+
   return (
     <div className="flex flex-wrap justify-center">
       {updatedMovies.map((movie, index) => (

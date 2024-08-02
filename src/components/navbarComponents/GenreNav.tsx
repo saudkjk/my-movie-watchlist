@@ -1,5 +1,5 @@
 "use client";
-import genresData from "@/lib/genres.json";
+import genres from "@/lib/genres.json";
 
 import {
   NavigationMenu,
@@ -17,7 +17,7 @@ type Genre = {
   name: string;
 };
 
-const movieGenres = genresData.genres;
+const movieGenres = genres.genres;
 
 export default function GenreNav() {
   return (

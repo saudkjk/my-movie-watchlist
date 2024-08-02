@@ -6,15 +6,9 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import links from "@/lib/links.json";
 
-const links = [
-  { path: "/", name: "Home" },
-  { path: "/genre?genre=trending", name: "Trending" },
-  { path: "/genre?genre=toprated", name: "Top Rated" },
-  { path: "/browse", name: "Browse Watchlists" },
-  { path: "/watchlist", name: "Watchlist" },
-  { path: "/completed", name: "Completed" },
-];
+const linksArray = links.links;
 
 export default async function MobileNav({ className }: { className?: string }) {
   return (
@@ -29,7 +23,7 @@ export default async function MobileNav({ className }: { className?: string }) {
           side="left"
           className="flex w-[220px] flex-col gap-3 text-center sm:w-[300px] sm:gap-1 sm:text-left"
         >
-          {links.map((link) => (
+          {linksArray.map((link) => (
             <SheetClose asChild key={link.path}>
               <a
                 href={link.path}
