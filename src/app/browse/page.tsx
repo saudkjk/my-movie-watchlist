@@ -1,5 +1,5 @@
 "use server";
-import { getUsersWithPublicVisibility } from "@/lib/database";
+import { getUsersWithPublicVisibility } from "@/lib/actions/database";
 import PageTitle from "@/components/PageTitle";
 import Link from "next/link";
 import Image from "next/image";

@@ -1,5 +1,7 @@
 "use server";
-import NavbarItem from "./NavbarItem";
+
+import NavbarItem from "@/components/navbar Components/NavbarItem";
+
 
 export default async function DesktopNav() {
   return (

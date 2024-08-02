@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { getVisibility, getWatchlistMoviesIds } from "@/lib/database";
-import { fetchMoviesByIds } from "@/lib/API";
+import { getVisibility, getWatchlistMoviesIds } from "@/lib/actions/database";
+import { fetchMoviesByIds } from "@/lib/actions/API";
 import PageTitle from "@/components/PageTitle";
 import ChangeVisibilitySwitch from "@/components/ChangeVisibilitySwitch";
 import DisplayMovies from "@/components/DisplayMovies";

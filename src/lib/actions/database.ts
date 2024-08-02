@@ -3,7 +3,7 @@ import { prisma } from '@/db';
 import { revalidatePath } from 'next/cache';
 import { clerkClient } from '@clerk/clerk-sdk-node';
 import { redirect } from 'next/navigation';
-import { User } from '@/types/types';
+import { User } from '@/lib/types/types';
 import { z } from "zod";
 
 export async function addComment(

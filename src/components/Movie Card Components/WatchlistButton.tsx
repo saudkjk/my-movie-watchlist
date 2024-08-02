@@ -2,14 +2,14 @@
 import { BsCheckCircle, BsPlusCircle } from "react-icons/bs";
 import { usePathname, useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
-import { addToWatchlist, removeFromWatchlist } from "@/lib/database";
+import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/database";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useState } from "react";
-import { WatchlistButtonProps } from "@/types/types";
+import { WatchlistButtonProps } from "@/lib/types/types";
 
 export function WatchlistButton({
   currentUserId,

@@ -1,5 +1,5 @@
 "use client";
-import { NavbarItemProps } from "@/types/types";
+import { NavbarItemProps } from "@/lib/types/types";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export default function NavbarItem({ title, href, path }: NavbarItemProps) {

@@ -1,7 +1,7 @@
 'use server';
 import { redirect } from "next/navigation";
 import genres from "@/lib/genres.json";
-import { updateWithDbStatus } from "./database";
+import { updateWithDbStatus } from "@/lib/actions/database";
 const API_KEY = process.env.API_KEY;
 
 export async function fetchMoviesByQuery(query: string, page: number) {

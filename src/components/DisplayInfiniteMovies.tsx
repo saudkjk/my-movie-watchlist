@@ -1,9 +1,9 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import MovieCard from "./MovieCard";
+import MovieCard from "@/components/MovieCard";
 import Image from "next/image";
-import { DisplayInfiniteMoviesProps, Movie } from "@/types/types";
+import { DisplayInfiniteMoviesProps, Movie } from "@/lib/types/types";
 let page = 2;
 
 export default function DisplayInfiniteMovies({

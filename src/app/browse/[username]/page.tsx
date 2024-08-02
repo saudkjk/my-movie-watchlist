@@ -1,8 +1,8 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/clerk-sdk-node";
-import { getUserDetails, getWatchlistMoviesIds } from "@/lib/database";
-import { fetchMoviesByIds } from "@/lib/API";
+import { getUserDetails, getWatchlistMoviesIds } from "@/lib/actions/database";
+import { fetchMoviesByIds } from "@/lib/actions/API";
 import Image from "next/image";
 import PageTitle from "@/components/PageTitle";
 import DisplayMovies from "@/components/DisplayMovies";

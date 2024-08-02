@@ -1,8 +1,8 @@
 "use server";
 import Image from "next/image";
-import DeleteComment from "./DeleteComment";
-import { getUserWatchlistComments } from "@/lib/database";
-import { CommentsProps, User, Comment, UserComment } from "@/types/types";
+import DeleteComment from "@/components/DeleteComment";
+import { getUserWatchlistComments } from "@/lib/actions/database";
+import { CommentsProps, User, Comment, UserComment } from "@/lib/types/types";
 
 export default async function DisplayComments({
   currentWatchlistUserId,

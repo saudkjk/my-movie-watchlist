@@ -1,7 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import AnimatedBorder from "@/components/AnimatedBorder";
+import AnimatedBorder from "@/components/ui/AnimatedBorder";
 import { useDebouncedCallback } from "use-debounce";
 import { z } from "zod";
 

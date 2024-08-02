@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { fetchMoviesTopOrTrending } from "@/lib/API";
+import { fetchMoviesTopOrTrending } from "@/lib/actions/API";
 import PageTitle from "@/components/PageTitle";
 import Link from "next/link";
 import DisplayMovies from "@/components/DisplayMovies";

@@ -1,9 +1,9 @@
 "use client";
-import { changeVisibility } from "@/lib/database";
+import { changeVisibility } from "@/lib/actions/database";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { ChangeVisibilitySwitchProps } from "@/types/types";
+import { ChangeVisibilitySwitchProps } from "@/lib/types/types";
 
 export default function ChangeVisibilitySwitch({
   userId,

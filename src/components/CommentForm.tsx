@@ -1,10 +1,10 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
-import { CommentFormProps } from "@/types/types";
+import { CommentFormProps } from "@/lib/types/types";
 import { SignInButton, useUser } from "@clerk/nextjs";
 import { useActionState, useRef } from "react";
-import { addComment } from "@/lib/database";
-import { Button } from "./ui/button";
+import { addComment } from "@/lib/actions/database";
+import { Button } from "@/components/ui/button";
 
 export default function CommentSection({
   username,

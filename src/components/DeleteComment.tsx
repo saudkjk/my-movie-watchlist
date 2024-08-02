@@ -1,5 +1,5 @@
 "use client";
-import { removeComment } from "@/lib/database";
+import { removeComment } from "@/lib/actions/database";
 import { useActionState } from "react";
 
 export default function DeleteComment({ commentId }: { commentId: string }) {

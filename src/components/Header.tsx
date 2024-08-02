@@ -1,7 +1,7 @@
 "use server";
-import SearchForm from "./SearchForm";
+import SearchForm from "@/components/SearchForm";
 import React from "react";
-import Navbar from "./Navbar";
+import Navbar from "@/components/Navbar";
 
 export default async function Header() {
   return (

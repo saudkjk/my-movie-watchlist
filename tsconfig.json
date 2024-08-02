@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/lib/API.ts",
+    "src/lib/actions/API.ts",
     "src/lib/debounce.js",
     "src/app/(pages)/search/[query]/page.tsx"
   ],

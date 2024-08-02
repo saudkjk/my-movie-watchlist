@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ImageHoverProps } from "@/types/types";
+import { ImageHoverProps } from "@/lib/types/types";
 
 export const ImageHover = ({
   imageUrl,

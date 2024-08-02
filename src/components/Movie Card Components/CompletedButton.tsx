@@ -7,10 +7,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { addToCompleted, removeFromCompleted } from "@/lib/database";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { addToCompleted, removeFromCompleted } from "@/lib/actions/database";
 import { useState } from "react";
-import { CompletedButtonProps } from "@/types/types";
+import { CompletedButtonProps } from "@/lib/types/types";
 
 export function CompletedButton({
   currentUserId,

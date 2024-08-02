@@ -1,8 +1,8 @@
 "use server";
 import React from "react";
-import MovieCard from "./MovieCard";
-import { updateWithDbStatus } from "@/lib/database";
-import { DisplayMoviesProps } from "@/types/types";
+import MovieCard from "@/components/MovieCard";
+import { updateWithDbStatus } from "@/lib/actions/database";
+import { DisplayMoviesProps } from "@/lib/types/types";
 
 export default async function DisplayMovies({
   movies,
