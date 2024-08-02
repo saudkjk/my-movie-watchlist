@@ -139,10 +139,6 @@ export async function fetchMoviesByIds(movies: any[]) {
   return results.filter(result => result !== null);
 }
 
-
-const movieGenres = genres.genres;
-
-
 export async function fetchMoviesAndPageInfo(genre: string, currentUserId: string) {
   let genreMovies, title, param, fetchMoviesWithDbStatus;
 
@@ -158,7 +154,7 @@ export async function fetchMoviesAndPageInfo(genre: string, currentUserId: strin
   }
   else {
     // Find the genre ID from the genre name
-    const genreId = movieGenres.find((g) => g.name.toLowerCase() === genre.toLowerCase())?.id;
+    const genreId = genres.find((g) => g.name.toLowerCase() === genre.toLowerCase())?.id;
     if (!genreId) redirect("/");
 
     genreMovies = await fetchMoviesByGenreWithDbStatus(String(genreId), 1, currentUserId);

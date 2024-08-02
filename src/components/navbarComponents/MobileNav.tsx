@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/sheet";
 import links from "@/lib/links.json";
 
-const linksArray = links.links;
-
 export default async function MobileNav({ className }: { className?: string }) {
   return (
     <div className={`ml-2 mt-1 flex justify-start ${className}`}>
@@ -23,7 +21,7 @@ export default async function MobileNav({ className }: { className?: string }) {
           side="left"
           className="flex w-[220px] flex-col gap-3 text-center sm:w-[300px] sm:gap-1 sm:text-left"
         >
-          {linksArray.map((link) => (
+          {links.map((link) => (
             <SheetClose asChild key={link.path}>
               <a
                 href={link.path}
