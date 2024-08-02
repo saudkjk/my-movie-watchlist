@@ -24,6 +24,7 @@ export async function addComment(
         const comment = formData.get("comment");
         const validation = commentSchema.safeParse({ comment });
 
+
         if (!validation.success) {
             return { status: 400, message: validation.error.errors.map(err => err.message).join(", ") };
         }
