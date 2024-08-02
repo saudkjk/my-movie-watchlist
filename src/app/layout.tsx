@@ -5,9 +5,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "./ThemeProvider";
 import Header from "@/components/Header";
+export const runtime = "edge";
 
 const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
   title: "My Movie Watchlist",
   description:
