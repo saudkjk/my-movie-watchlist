@@ -26,7 +26,7 @@ export default function SearchForm() {
   }, 400);
 
   return (
-    <div className="container mx-auto mt-2">
+    <div className="container mx-auto mt-20 md:mt-2">
       <form className="flex" onSubmit={(e) => e.preventDefault()}>
         <div className="flex-grow">
           <AnimatedBorder>

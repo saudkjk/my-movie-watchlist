@@ -22,11 +22,11 @@ export default function GenreNav() {
     <NavigationMenu className="z-50">
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger className="mx-2 p-1 text-sm lg:text-lg">
+          <NavigationMenuTrigger className="mx-2 bg-transparent p-1 text-sm lg:text-lg">
             Genre
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-[320px] grid-cols-3 gap-3 p-4 md:w-[370px]">
+            <ul className="grid w-[350px] grid-cols-3 gap-3 p-4 md:w-[400px]">
               {genres.map((genre: Genre) => (
                 <ListItem
                   key={genre.id}
