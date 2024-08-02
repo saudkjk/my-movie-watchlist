@@ -1,4 +1,6 @@
 'use server';
+import { redirect } from "next/navigation";
+import genresData from "@/lib/genres.json";
 import { updateWithDbStatus } from "./database";
 const API_KEY = process.env.API_KEY;
 
@@ -135,4 +137,40 @@ export async function fetchMoviesByIds(movies: any[]) {
   );
 
   return results.filter(result => result !== null);
+}
+
+
+const movieGenres = genresData.genres;
+
+
+export async function fetchMoviesAndPageInfo(genre: string, currentUserId: string) {
+  let genreMovies, title, param, fetchMoviesWithDbStatus;
+
+  if (genre === "toprated" || genre === "trending") {
+    genreMovies = await fetchMoviesTopTrendingWithDbStatus(
+      genre,
+      1,
+      currentUserId
+    );
+    title = genre === "toprated" ? "Top Rated" : "Trending";
+    param = genre;
+    fetchMoviesWithDbStatus = fetchMoviesTopTrendingWithDbStatus;
+  } else {
+    // Find the genre ID from the genre name
+    const genreId = movieGenres.find(
+      (g) => g.name.toLowerCase() === genre.toLowerCase()
+    )?.id;
+    if (!genreId) redirect("/");
+
+    genreMovies = await fetchMoviesByGenreWithDbStatus(
+      String(genreId),
+      1,
+      currentUserId
+    );
+    fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
+    param = String(genreId);
+    title = genre.charAt(0).toUpperCase() + genre.slice(1);
+  }
+
+  return { genreMovies, title, param, fetchMoviesWithDbStatus };
 }

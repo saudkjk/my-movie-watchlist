@@ -1,7 +1,7 @@
 "use server";
 import Image from "next/image";
 import DeleteComment from "./DeleteComment";
-import { getUserWatchlistComments, removeComment } from "@/lib/database";
+import { getUserWatchlistComments } from "@/lib/database";
 import { CommentsProps, User, Comment, UserComment } from "@/types/types";
 
 export default async function DisplayComments({
@@ -9,11 +9,11 @@ export default async function DisplayComments({
   usersList,
   currentUserId,
 }: CommentsProps) {
-  // get watchlist comments
+  // get current watchlist comments
   const currentWatchlistComments =
     (await getUserWatchlistComments(currentWatchlistUserId)).data || [];
 
-  // get users information
+  // get users information from usersList
   const users = usersList.map((user: User) => ({
     username: user.username,
     imageUrl: user.imageUrl,

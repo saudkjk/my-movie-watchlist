@@ -2,22 +2,44 @@
 import { prisma } from '@/db';
 import { revalidatePath } from 'next/cache';
 import { clerkClient } from '@clerk/clerk-sdk-node';
+import { redirect } from 'next/navigation';
+import { User } from '@/types/types';
+import { z } from "zod";
 
-export async function addComment(userId: string, targetUserId: string, comment: string, username: string) {
+
+
+export async function addComment(
+    userId: string,
+    targetUserId: string,
+    previousState: any,
+    formData: FormData,
+) {
+    const commentSchema = z.object({
+        comment: z.string().min(1, "Comment cannot be empty"),
+    });
+
+
     try {
+
+        const comment = formData.get("comment");
+        const validation = commentSchema.safeParse({ comment });
+
+        if (!validation.success) {
+            return { status: 400, message: validation.error.errors.map(err => err.message).join(", ") };
+        }
+
         await prisma.comments.create({
             data: {
                 userId: userId,
                 targetUserId: targetUserId,
-                comment: comment,
-            }
+                comment: validation.data.comment,
+            },
         });
-        // revalidatePath(`/browse/${username}`);
-        revalidatePath('/');
-        return { status: 200, message: "Added comment successfully" };
+
+        revalidatePath("/");
     } catch (error) {
-        console.error('Error adding comment:', error);
-        return { status: 500, message: 'Failed to add comment' };
+        console.error("Error adding comment:", error);
+        return { status: 500, message: "Failed to add comment" };
     }
 }
 
@@ -113,86 +135,6 @@ export async function removeFromCompleted(userId: string, movieId: string) {
         return { status: 500, message: 'Failed to remove from list' };
     }
 }
-
-export async function inWatchlist(userId: string, movieIds: number[]) {
-    try {
-        const watchlist = await prisma.watchlist.findMany({
-            where: {
-                userId: userId,
-                movieId: {
-                    in: movieIds.map(id => String(id))
-                }
-            }
-        });
-
-        const movieIdSet = new Set(watchlist.map(item => Number(item.movieId)));
-        return movieIds.map(movieId => movieIdSet.has(movieId));
-    } catch (error) {
-        console.error('Error fetching watchlist:', error);
-        throw error;
-    }
-}
-
-export async function inCompleted(userId: string, movieIds: number[]) {
-    try {
-        const completed = await prisma.completed.findMany({
-            where: {
-                userId: userId,
-                movieId: {
-                    in: movieIds.map(id => String(id))
-                }
-            }
-        });
-
-        const movieIdSet = new Set(completed.map(item => Number(item.movieId)));
-        return movieIds.map(movieId => movieIdSet.has(movieId));
-    } catch (error) {
-        console.error('Error fetching completed:', error);
-        throw error;
-    }
-}
-
-export async function isLiked(userId: string, movieIds: number[]) {
-    try {
-        const likedMovies = await prisma.completed.findMany({
-            where: {
-                userId: userId,
-                movieId: {
-                    in: movieIds.map(id => String(id))
-                },
-                rating: "liked"
-            }
-        });
-
-        const likedMovieIdSet = new Set(likedMovies.map(item => Number(item.movieId)));
-        return movieIds.map(movieId => likedMovieIdSet.has(movieId));
-    } catch (error) {
-        console.error('Error fetching liked movies:', error);
-        throw error;
-    }
-}
-
-// export async function updateWithDbStatus(userId: string, movies: any[]) {
-//     const movieIds = movies.map(movie => movie.id);
-
-//     try {
-//         const [watchlistStatuses, completedStatuses, likedStatuses] = await Promise.all([
-//             inWatchlist(userId, movieIds),
-//             inCompleted(userId, movieIds),
-//             isLiked(userId, movieIds),
-//         ]);
-
-//         return movies.map((movie, index) => ({
-//             ...movie,
-//             inWatchlist: watchlistStatuses[index],
-//             inCompleted: completedStatuses[index],
-//             isLiked: likedStatuses[index],
-//         }));
-//     } catch (error) {
-//         console.error('Error checking database status:', error);
-//         throw error;
-//     }
-// }
 
 async function fetchStatuses(userId: string, movieIds: number[]) {
     const [watchlist, completed, liked] = await Promise.all([
@@ -354,4 +296,18 @@ export async function getWatchlistMoviesIds(userId: string) {
         console.error("Error fetching watchlist movies IDs:", error);
         throw new Error("Failed to fetch watchlist movies IDs");
     }
+}
+
+
+export async function getUserDetails(username: string, usersList: User[]) {
+    const user = usersList.find((user) => user.username === username);
+
+    if (!user) {
+        redirect("/browse");
+    }
+
+    return {
+        id: user.id,
+        imageUrl: user.imageUrl,
+    };
 }

@@ -1,7 +1,5 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-import React from "react";
 import { fetchMoviesByIds } from "@/lib/API";
 import DisplayMovies from "@/components/DisplayMovies";
 import Image from "next/image";
@@ -9,7 +7,7 @@ import DisplayComments from "@/components/DisplayComments";
 import CommentForm from "@/components/CommentForm";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 import PageTitle from "@/components/PageTitle";
-import { getWatchlistMoviesIds } from "@/lib/database";
+import { getUserDetails, getWatchlistMoviesIds } from "@/lib/database";
 
 type PagePropss = {
   params: {
@@ -21,17 +19,10 @@ export default async function Page({ params }: PagePropss) {
   const username = params.username;
   const currentUserId = (await auth().userId) || "";
 
-  // get user id and image from username
   const usersList = (await clerkClient.users.getUserList()).data;
-  const user = usersList.find((user) => user.username === username);
-  const currentWatchlistUserId = user ? user.id : "";
-  const imageUrl = user ? user.imageUrl : "";
 
-  if (!currentWatchlistUserId) redirect("/browse");
-
-  const watchlistMoviesIds = await getWatchlistMoviesIds(
-    currentWatchlistUserId,
-  );
+  const { id: currentWatchlistUserId, imageUrl } = await getUserDetails(username, usersList);
+  const watchlistMoviesIds = await getWatchlistMoviesIds(currentWatchlistUserId,);
   const movies = await fetchMoviesByIds(watchlistMoviesIds);
 
   return (

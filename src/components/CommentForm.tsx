@@ -1,18 +1,14 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { addComment } from "@/lib/database";
 import { CommentFormProps } from "@/types/types";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { revalidatePath } from "next/cache";
-import { useRef } from "react";
-import { useFormStatus } from "react-dom";
-import { z } from "zod";
-import CommentButton from "./CommentButton";
+import { useActionState, useRef } from "react";
+import { addComment } from "@/lib/database";
+import { Button } from "./ui/button";
 
-const commentSchema = z.object({
-  comment: z.string().min(1, "Comment cannot be empty"),
-});
+const initialState = {
+  message: "",
+};
 
 export default function CommentSection({
   username,
@@ -22,20 +18,11 @@ export default function CommentSection({
   const { isSignedIn } = useUser();
   const ref = useRef<HTMLFormElement>(null);
 
-  async function formAction(formData: FormData) {
-    ref.current?.reset();
-    const comment = formData.get("comment");
-
-    const validation = commentSchema.safeParse({ comment });
-
-    if (!validation.success) {
-      console.error(validation.error.errors);
-      return;
-    }
-
-    if (comment)
-      await addComment(currentUserId, targetUserId, String(comment), username);
-  }
+  const boundAddComment = addComment.bind(null, currentUserId, targetUserId);
+  const [state, formAction, isPending] = useActionState(
+    boundAddComment,
+    initialState,
+  );
 
   return (
     <div className="mx-auto mt-7 grid max-w-[600px] gap-2 md:mx-20 md:max-w-[100%]">
@@ -54,9 +41,12 @@ export default function CommentSection({
           placeholder="Type your comment here."
           disabled={!isSignedIn}
         />
+        {state && <p className="absolute mt-1 text-red-500">{state.message}</p>}
         {isSignedIn ? (
           <div className="mt-2 flex justify-end gap-2">
-            <CommentButton />
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Submitting..." : "Comment"}
+            </Button>
           </div>
         ) : (
           <SignInButton
