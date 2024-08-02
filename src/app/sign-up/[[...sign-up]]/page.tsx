@@ -1,6 +1,5 @@
 import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
-import React from "react";
 
 function page() {
   return (

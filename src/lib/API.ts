@@ -40,7 +40,7 @@ export async function fetchMoviesByQueryWithDbStatus(query: string, page: number
   return updatedRes;
 }
 
-export async function fetchMoviesTopTrending(genre: string, page: number) {
+export async function fetchMoviesTopOrTrending(genre: string, page: number) {
 
   // get movies
   const res = await fetch(
@@ -67,9 +67,9 @@ export async function fetchMoviesTopTrending(genre: string, page: number) {
   return results;
 }
 
-export async function fetchMoviesTopTrendingWithDbStatus(genre: string, page: number, currentUserId: string) {
+export async function fetchMoviesTopOrTrendingWithDbStatus(genre: string, page: number, currentUserId: string) {
 
-  const results = await fetchMoviesTopTrending(genre, page);
+  const results = await fetchMoviesTopOrTrending(genre, page);
 
   const updatedRes = currentUserId
     ? await updateWithDbStatus(String(currentUserId), results)
@@ -147,14 +147,14 @@ export async function fetchMoviesAndPageInfo(genre: string, currentUserId: strin
   let genreMovies, title, param, fetchMoviesWithDbStatus;
 
   if (genre === "toprated" || genre === "trending") {
-    genreMovies = await fetchMoviesTopTrendingWithDbStatus(
+    genreMovies = await fetchMoviesTopOrTrendingWithDbStatus(
       genre,
       1,
       currentUserId
     );
     title = genre === "toprated" ? "Top Rated" : "Trending";
     param = genre;
-    fetchMoviesWithDbStatus = fetchMoviesTopTrendingWithDbStatus;
+    fetchMoviesWithDbStatus = fetchMoviesTopOrTrendingWithDbStatus;
   }
   else {
     // Find the genre ID from the genre name

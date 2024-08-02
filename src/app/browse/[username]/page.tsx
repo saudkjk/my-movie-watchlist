@@ -1,13 +1,13 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import { fetchMoviesByIds } from "@/lib/API";
-import DisplayMovies from "@/components/DisplayMovies";
-import Image from "next/image";
-import DisplayComments from "@/components/DisplayComments";
-import CommentForm from "@/components/CommentForm";
 import { clerkClient } from "@clerk/clerk-sdk-node";
-import PageTitle from "@/components/PageTitle";
 import { getUserDetails, getWatchlistMoviesIds } from "@/lib/database";
+import { fetchMoviesByIds } from "@/lib/API";
+import Image from "next/image";
+import PageTitle from "@/components/PageTitle";
+import DisplayMovies from "@/components/DisplayMovies";
+import CommentForm from "@/components/CommentForm";
+import DisplayComments from "@/components/DisplayComments";
 
 type PagePropss = {
   params: {
@@ -21,8 +21,13 @@ export default async function Page({ params }: PagePropss) {
 
   const usersList = (await clerkClient.users.getUserList()).data;
 
-  const { id: currentWatchlistUserId, imageUrl } = await getUserDetails(username, usersList);
-  const watchlistMoviesIds = await getWatchlistMoviesIds(currentWatchlistUserId,);
+  const { id: currentWatchlistUserId, imageUrl } = await getUserDetails(
+    username,
+    usersList,
+  );
+  const watchlistMoviesIds = await getWatchlistMoviesIds(
+    currentWatchlistUserId,
+  );
   const movies = await fetchMoviesByIds(watchlistMoviesIds);
 
   return (

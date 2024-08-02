@@ -1,14 +1,14 @@
 "use server";
-import DisplayMovies from "@/components/DisplayMovies";
-import PageTitle from "@/components/PageTitle";
-import { fetchMoviesTopTrending } from "@/lib/API";
 import { auth } from "@clerk/nextjs/server";
+import { fetchMoviesTopOrTrending } from "@/lib/API";
+import PageTitle from "@/components/PageTitle";
 import Link from "next/link";
+import DisplayMovies from "@/components/DisplayMovies";
 
 export default async function Page() {
   const currentUserId = (await auth().userId) || "";
-  const trendingMovies = await fetchMoviesTopTrending("trending", 1);
-  const topRatedMovies = await fetchMoviesTopTrending("toprated", 1);
+  const trendingMovies = await fetchMoviesTopOrTrending("trending", 1);
+  const topRatedMovies = await fetchMoviesTopOrTrending("toprated", 1);
 
   return (
     <>

@@ -1,8 +1,8 @@
 "use server";
-import Link from "next/link";
-import Image from "next/image";
 import { getUsersWithPublicVisibility } from "@/lib/database";
 import PageTitle from "@/components/PageTitle";
+import Link from "next/link";
+import Image from "next/image";
 
 export default async function Page() {
   const users = (await getUsersWithPublicVisibility()).users;

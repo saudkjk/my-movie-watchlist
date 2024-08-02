@@ -1,7 +1,7 @@
 "use server";
-import PageTitle from "@/components/PageTitle";
-import {fetchMoviesAndPageInfo } from "@/lib/API";
 import { auth } from "@clerk/nextjs/server";
+import { fetchMoviesAndPageInfo } from "@/lib/API";
+import PageTitle from "@/components/PageTitle";
 import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
 
 type PageProps = {

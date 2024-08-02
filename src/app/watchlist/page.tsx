@@ -1,11 +1,10 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import React from "react";
-import { fetchMoviesByIds } from "@/lib/API";
 import { getVisibility, getWatchlistMoviesIds } from "@/lib/database";
-import DisplayMovies from "@/components/DisplayMovies";
+import { fetchMoviesByIds } from "@/lib/API";
 import PageTitle from "@/components/PageTitle";
 import ChangeVisibilitySwitch from "@/components/ChangeVisibilitySwitch";
+import DisplayMovies from "@/components/DisplayMovies";
 
 // this page is only accessible to logged in users protected by the clerk auth middleware
 export default async function Page() {

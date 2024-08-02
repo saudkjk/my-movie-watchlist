@@ -1,10 +1,8 @@
 "use server";
-import { fetchMoviesByQueryWithDbStatus } from "@/lib/API";
 import { auth } from "@clerk/nextjs/server";
+import { fetchMoviesByQueryWithDbStatus } from "@/lib/API";
 import PageTitle from "@/components/PageTitle";
 import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
-import DisplayMovies from "@/components/DisplayMovies";
-import { revalidatePath } from "next/cache";
 
 type PageProps = {
   searchParams: {
