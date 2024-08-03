@@ -29,9 +29,7 @@ export default function DisplayInfiniteMovies({
 
   useEffect(() => {
     if (inView) {
-      const delay = 200;
-      const timeoutId = setTimeout(() => fetchMoreMovies(), delay);
-      return () => clearTimeout(timeoutId);
+      fetchMoreMovies();
     }
   }, [inView]);
 
@@ -52,7 +50,8 @@ export default function DisplayInfiniteMovies({
           </div>
         ))}
       </div>
-      <div ref={ref} className="flex w-full items-center justify-center">
+      <div ref={ref}></div>
+      <div className="flex w-full items-center justify-center">
         <Image
           src="/spinner.svg"
           alt="spinner"

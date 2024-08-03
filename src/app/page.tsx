@@ -15,7 +15,7 @@ export default async function Page() {
       <div className="flex gap-2">
         <PageTitle title="Trending" />
         <Link
-          href="/genre?genre=trending"
+          href="/trending"
           className="mt-5 font-semibold hover:text-blue-600 md:mt-2"
         >
           See all
@@ -26,7 +26,7 @@ export default async function Page() {
       <div className="flex gap-2">
         <PageTitle title="Top Rated" />
         <Link
-          href="/genre?genre=toprated"
+          href="/toprated"
           className="mt-5 font-semibold hover:text-blue-600 md:mt-2"
         >
           See all
