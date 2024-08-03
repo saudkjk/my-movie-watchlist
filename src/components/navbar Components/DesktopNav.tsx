@@ -1,5 +1,4 @@
-"use client";
-
+"use server";
 import * as React from "react";
 import Link from "next/link";
 
@@ -13,11 +12,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { usePathname } from "next/navigation";
 
-export function DesktopNav() {
-  const pathname = usePathname();
-  console.log(pathname);
+export default async function DesktopNav() {
   return (
     <NavigationMenu className="justify-center gap-4 py-2">
       <NavigationMenuList>

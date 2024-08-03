@@ -4,7 +4,7 @@ import AuthButtons from "./navbar Components/AuthButtons";
 import Logo from "./navbar Components/Logo";
 import Home from "./navbar Components/Home";
 import MobileNav from "./navbar Components/MobileNav";
-import { DesktopNav } from "./navbar Components/DesktopNav";
+import DesktopNav from "./navbar Components/DesktopNav";
 
 export default async function Navbar() {
   return (
