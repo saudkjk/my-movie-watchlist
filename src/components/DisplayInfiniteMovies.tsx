@@ -11,12 +11,18 @@ export default function DisplayInfiniteMovies({
   param,
   fetchMoviesWithDbStatus,
   currentUserId,
+  sortBy,
 }: DisplayInfiniteMoviesProps) {
   const { ref, inView } = useInView();
   const [data, setData] = useState<Movie[]>(movies);
 
   const fetchMoreMovies = useCallback(async () => {
-    const newMovies = await fetchMoviesWithDbStatus(param, page, currentUserId);
+    const newMovies = await fetchMoviesWithDbStatus(
+      param,
+      page,
+      currentUserId,
+      sortBy,
+    );
     setData([...data, ...newMovies]);
     page += 1;
   }, [param, currentUserId, fetchMoviesWithDbStatus, data]);

@@ -1,18 +1,99 @@
-"use server";
+"use client";
 
-import NavbarItem from "@/components/navbar Components/NavbarItem";
+import * as React from "react";
+import Link from "next/link";
 
+import { cn } from "@/lib/utils";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import { usePathname } from "next/navigation";
 
-export default async function DesktopNav() {
+export function DesktopNav() {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
-    <div
-      className={`mt-1 flex-1 flex-grow justify-center gap-4 py-4 text-sm md:flex lg:text-lg`}
-    >
-      <NavbarItem title="Trending" href="/genre?genre=trending" path="trending" />
-      <NavbarItem title="Top Rated" href="/genre?genre=toprated" path="toprated" />
-      <NavbarItem title="Browse Watchlists" href="/browse" path="browse" />
-      <NavbarItem title="Watchlist" href="/watchlist" path="watchlist" />
-      <NavbarItem title="Completed" href="/completed" path="completed" />
-    </div>
+    <NavigationMenu className="justify-center gap-4 py-2">
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger className="bg-transparent">
+            Movies
+          </NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[200px] grid-cols-1 gap-3 p-3">
+              <ListItem
+                href="/trending"
+                title="Trending"
+                className="flex justify-center align-middle"
+              ></ListItem>
+              <ListItem
+                href="/toprated"
+                title="Top Rated"
+                className="flex justify-center align-middle"
+              ></ListItem>
+              <ListItem
+                href="/genre"
+                title="By Genre"
+                className="flex justify-center align-middle"
+              ></ListItem>
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem className="bg-transparent">
+          <Link href="/browse" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Browse Watchlists
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Link href="/watchlist" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Watchlist
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link href="/completed" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Completed
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className,
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";

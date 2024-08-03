@@ -25,7 +25,7 @@ export default async function MobileNav({ className }: { className?: string }) {
             <SheetClose asChild key={link.path}>
               <a
                 href={link.path}
-                className={`font-semibold hover:text-blue-600`}
+                className="h-10 w-full items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 {link.name}
               </a>

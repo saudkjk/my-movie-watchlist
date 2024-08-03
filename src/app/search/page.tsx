@@ -24,11 +24,13 @@ export default async function Page({ searchParams }: PageProps) {
       {searchedMovies && searchedMovies.length > 0 && (
         <>
           <PageTitle title={`Search results for: "${query}"`} />
+
           <DisplayInfiniteMovies
             movies={searchedMovies}
             param={query}
             fetchMoviesWithDbStatus={fetchMoviesByQueryWithDbStatus}
             currentUserId={currentUserId}
+            sortBy={"popularity.desc"}
           />
         </>
       )}

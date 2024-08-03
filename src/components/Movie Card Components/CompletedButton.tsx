@@ -6,8 +6,12 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+} from "@/components/ui/popover-modified";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { addToCompleted, removeFromCompleted } from "@/lib/actions/database";
 import { useState } from "react";
 import { CompletedButtonProps } from "@/lib/types/types";
@@ -82,7 +86,7 @@ export function CompletedButton({
               <BsHandThumbsUp className="text-2xl text-white sm:text-3xl" />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="m-1 max-w-[70px] p-1">
+          <PopoverContent className="m-0 w-auto p-1">
             <button className="flex cursor-pointer justify-center text-2xl text-black dark:text-white sm:text-3xl">
               <BsHandThumbsUp
                 onClick={() => handleToggleCompleted("add", "liked")}

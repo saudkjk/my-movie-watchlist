@@ -7,8 +7,8 @@ import DisplayMovies from "@/components/DisplayMovies";
 
 export default async function Page() {
   const currentUserId = (await auth().userId) || "";
-  const trendingMovies = await fetchMoviesTopOrTrending("trending", 1);
-  const topRatedMovies = await fetchMoviesTopOrTrending("toprated", 1);
+  const trendingMovies = await fetchMoviesTopOrTrending("trending", 1, "popularity.desc");
+  const topRatedMovies = await fetchMoviesTopOrTrending("toprated", 1, "popularity.desc");
 
   return (
     <>

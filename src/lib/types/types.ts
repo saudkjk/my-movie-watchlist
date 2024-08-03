@@ -4,9 +4,11 @@ export type DisplayInfiniteMoviesProps = {
     fetchMoviesWithDbStatus: (
         genre: string,
         page: number,
-        currentUserId: string
+        currentUserId: string,
+        sortBy: string
     ) => Promise<Movie[]>,
     currentUserId: string,
+    sortBy: string
 }
 
 
@@ -91,7 +93,6 @@ export type ChangeVisibilitySwitchProps = {
 export type NavbarItemProps = {
     title: string;
     href: string;
-    path: string;
     children?: React.ReactNode;
 };
 
