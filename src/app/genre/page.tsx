@@ -8,7 +8,7 @@ import {
 } from "@/lib/actions/API";
 import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
 import MovieFilter from "@/components/MovieFilter";
-import GenreFilter from "@/components/filter components/GenreFilter";
+import GenreFilter from "@/components/filter-components/GenreFilter";
 
 type PageProps = {
   searchParams: {

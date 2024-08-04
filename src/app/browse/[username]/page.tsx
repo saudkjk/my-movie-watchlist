@@ -6,8 +6,8 @@ import { fetchMoviesByIds } from "@/lib/actions/API";
 import Image from "next/image";
 import PageTitle from "@/components/PageTitle";
 import DisplayMovies from "@/components/DisplayMovies";
-import CommentForm from "@/components/comments components/CommentForm";
-import DisplayComments from "@/components/comments components/DisplayComments";
+import CommentForm from "@/components/comments-components/CommentForm";
+import DisplayComments from "@/components/comments-components/DisplayComments";
 
 type PagePropss = {
   params: {

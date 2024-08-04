@@ -7,10 +7,10 @@ import { Genre } from "@/lib/types/types";
 import Link from "next/link";
 import genres from "@/lib/genres.json";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { SelectSortBy } from "@/components/filter components/SelectSortBy";
+import { SelectSortBy } from "@/components/filter-components/SelectSortBy";
 import { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import CurrentFilters from "@/components/filter components/CurrentFilters";
+import CurrentFilters from "@/components/filter-components/CurrentFilters";
 
 export default function MovieFilter({
   className,

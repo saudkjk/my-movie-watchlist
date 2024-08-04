@@ -1,5 +1,4 @@
 'use server';
-import { redirect } from "next/navigation";
 
 import { updateWithDbStatus } from "@/lib/actions/database";
 const API_KEY = process.env.API_KEY;
