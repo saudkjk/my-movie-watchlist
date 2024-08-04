@@ -12,6 +12,7 @@ export default async function Navbar() {
       <div className="container z-50 flex items-center justify-between gap-4 bg-white py-2 dark:bg-slate-950">
         <MobileNav />
         <Home />
+
         <div className="flex flex-1 justify-end gap-2 md:gap-1 lg:text-lg">
           <AuthButtons />
           <DarkModeSwitch />
