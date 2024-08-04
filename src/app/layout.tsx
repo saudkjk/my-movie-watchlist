@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { ThemeProvider } from "./ThemeProvider";
+import { ThemeProvider } from "@/app/ThemeProvider";
 import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });

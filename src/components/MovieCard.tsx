@@ -1,13 +1,11 @@
 "use client";
 import React from "react";
-
 import { TooltipProvider } from "@/components/ui/tooltip";
-
 import Link from "next/link";
 import { MovieCardProps } from "@/lib/types/types";
-import { ImageHover } from "./movie card components/ImageHover";
-import { WatchlistButton } from "./movie card components/WatchlistButton";
-import { CompletedButton } from "./movie card components/CompletedButton";
+import { ImageHover } from "@/components/movie card components/ImageHover";
+import { WatchlistButton } from "@/components/movie card components/WatchlistButton";
+import { CompletedButton } from "@/components/movie card components/CompletedButton";
 
 function MovieCard({ movie, currentUserId, isLCP }: MovieCardProps) {
   let imageURL = `https://image.tmdb.org/t/p/original/${movie.poster_path}`;

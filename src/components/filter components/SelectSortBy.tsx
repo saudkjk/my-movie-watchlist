@@ -4,11 +4,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 
 export function SelectSortBy() {

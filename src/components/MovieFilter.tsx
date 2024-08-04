@@ -2,15 +2,15 @@
 import { CiFilter } from "react-icons/ci";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useMediaQuery } from "usehooks-ts";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { Genre } from "@/lib/types/types";
 import Link from "next/link";
 import genres from "@/lib/genres.json";
-import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
-import { SelectSortBy } from "./filter components/SelectSortBy";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { SelectSortBy } from "@/components/filter components/SelectSortBy";
 import { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import CurrentFilters from "./filter components/CurrentFilters";
+import CurrentFilters from "@/components/filter components/CurrentFilters";
 
 export default function MovieFilter({
   className,

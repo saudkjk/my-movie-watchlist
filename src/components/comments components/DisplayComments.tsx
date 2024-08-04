@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { getUserWatchlistComments } from "@/lib/actions/database";
 import { CommentsProps, User, Comment, UserComment } from "@/lib/types/types";
-import DeleteComment from "./DeleteComment";
+import DeleteComment from "@/components/comments components/DeleteComment";
 
 export default async function DisplayComments({
   currentWatchlistUserId,
