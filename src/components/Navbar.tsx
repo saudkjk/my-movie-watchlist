@@ -1,10 +1,10 @@
 "use server";
 import DarkModeSwitch from "./DarkModeSwitch";
-import AuthButtons from "./navbar components/AuthButtons";
 import Logo from "./navbar components/Logo";
 import Home from "./navbar components/Home";
 import MobileNav from "./navbar components/MobileNav";
 import DesktopNav from "./navbar components/DesktopNav";
+import AuthButtons from "./navbar components/AuthButtons";
 
 export default async function Navbar() {
   return (
