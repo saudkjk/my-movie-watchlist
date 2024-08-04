@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { ImageHover } from "@/components/Movie Card Components/ImageHover";
+import { ImageHover } from "@/components/movie card components/ImageHover";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { WatchlistButton } from "@/components/Movie Card Components/WatchlistButton";
-import { CompletedButton } from "@/components/Movie Card Components/CompletedButton";
+import { WatchlistButton } from "@/components/movie card components/WatchlistButton";
+import { CompletedButton } from "@/components/movie card components/CompletedButton";
 
 import Link from "next/link";
 import { MovieCardProps } from "@/lib/types/types";

@@ -65,7 +65,7 @@ export async function fetchMoviesTopOrTrending(genre: string, page: Number) {
   return results;
 }
 
-export async function fetchMoviesTopOrTrendingWithDbStatus(genre: string, page: number, currentUserId: string) {
+export async function fetchMoviesTopOrTrendingWithDbStatus(genre: string, page: number, currentUserId: string, sortBy: string) {
 
   const results = await fetchMoviesTopOrTrending(genre, page);
 
@@ -75,10 +75,10 @@ export async function fetchMoviesTopOrTrendingWithDbStatus(genre: string, page: 
   return updatedRes;
 }
 
-export async function fetchMoviesByGenre(genreId: number, page: number, sortBy: string) {
+export async function fetchMoviesByGenre(genreIds: string, page: number, sortBy: string) {
   // get movies by genre
   const res = await fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&page=${page}&with_genres=${genreId}&sort_by=${sortBy}&vote_count.gte=50}`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&page=${page}&with_genres=${genreIds}&sort_by=${sortBy}&vote_count.gte=50}`
   );
   const data = await res.json();
   if (!res.ok) {
@@ -102,9 +102,9 @@ export async function fetchMoviesByGenre(genreId: number, page: number, sortBy: 
   return results;
 }
 
-export async function fetchMoviesByGenreWithDbStatus(genreId: string, page: number, currentUserId: string, sortBy: string) {
+export async function fetchMoviesByGenreWithDbStatus(genreIds: string, page: number, currentUserId: string, sortBy: string) {
 
-  const results = await fetchMoviesByGenre(Number(genreId), page, sortBy);
+  const results = await fetchMoviesByGenre(genreIds, page, sortBy);
 
   const updatedRes = currentUserId
     ? await updateWithDbStatus(String(currentUserId), results)

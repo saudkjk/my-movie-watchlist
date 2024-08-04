@@ -2,11 +2,13 @@
 import genres from "@/lib/genres.json";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { fetchMoviesByGenreWithDbStatus } from "@/lib/actions/API";
-import PageTitle from "@/components/PageTitle";
+import {
+  fetchMoviesByGenreWithDbStatus,
+  fetchMoviesTopOrTrendingWithDbStatus,
+} from "@/lib/actions/API";
 import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
-import GenreNav from "@/components/GenreNav";
-import GenreFilter from "@/components/GenreFilter";
+import MovieFilter from "@/components/MovieFilter";
+import GenreFilter from "@/components/filter components/GenreFilter";
 
 type PageProps = {
   searchParams: {
@@ -16,38 +18,56 @@ type PageProps = {
 };
 
 export default async function Page({ searchParams }: PageProps) {
-  const genre = searchParams.genre || "Action";
+  const genre = searchParams.genre;
   const sortBy = searchParams.sortBy || "popularity.desc";
-
   const currentUserId = (await auth().userId) || "";
 
-  const genreId = genres.find(
-    (g) => g.name.toLowerCase() === genre.toLowerCase(),
-  )?.id;
-  if (!genreId) redirect("/");
+  let genreMovies, param, title, fetchMoviesWithDbStatus;
 
-  const genreMovies = await fetchMoviesByGenreWithDbStatus(
-    String(genreId),
-    1,
-    currentUserId,
-    sortBy,
-  );
-  const fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
-  const param = String(genreId);
-  const title = genre.charAt(0).toUpperCase() + genre.slice(1);
+  if (genre) {
+    // Split genres and find corresponding IDs
+    const genreIds = genre
+      .split(",")
+      .map((g) => {
+        const genreObj = genres.find(
+          (genre) => genre.name.toLowerCase() === g.toLowerCase(),
+        );
+        return genreObj ? genreObj.id : null;
+      })
+      .filter((id) => id !== null);
+
+    if (genreIds.length === 0) redirect("/");
+
+    const genreIdsStr = genreIds.join(",");
+
+    genreMovies = await fetchMoviesByGenreWithDbStatus(
+      genreIdsStr,
+      1,
+      currentUserId,
+      sortBy,
+    );
+    fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
+    param = genreIdsStr;
+  } else {
+    genreMovies = await fetchMoviesTopOrTrendingWithDbStatus(
+      "trending",
+      1,
+      currentUserId,
+      sortBy,
+    );
+    fetchMoviesWithDbStatus = fetchMoviesTopOrTrendingWithDbStatus;
+    param = "trending";
+  }
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <PageTitle title={title} />
-        <GenreFilter>
-          <GenreNav />
-        </GenreFilter>
-      </div>
+      <MovieFilter>
+        <GenreFilter />
+      </MovieFilter>
       <DisplayInfiniteMovies
         movies={genreMovies}
-        param={param}
         fetchMoviesWithDbStatus={fetchMoviesWithDbStatus}
+        param={param}
         currentUserId={currentUserId}
         sortBy={sortBy}
       />

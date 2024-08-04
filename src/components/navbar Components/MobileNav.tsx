@@ -19,13 +19,13 @@ export default async function MobileNav({ className }: { className?: string }) {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="flex w-[220px] flex-col gap-3 text-center sm:w-[300px] sm:gap-1 sm:text-left"
+          className="flex w-[230px] flex-col gap-2 text-center sm:w-[300px] sm:gap-1 sm:text-left"
         >
           {links.map((link) => (
             <SheetClose asChild key={link.path}>
               <a
                 href={link.path}
-                className="h-10 w-full items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="h-10 max-w-[90%] items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
               >
                 {link.name}
               </a>

@@ -1,14 +1,14 @@
 export type DisplayInfiniteMoviesProps = {
     movies: Movie[];
-    param: string;
     fetchMoviesWithDbStatus: (
         genre: string,
         page: number,
         currentUserId: string,
         sortBy: string
-    ) => Promise<Movie[]>,
-    currentUserId: string,
-    sortBy: string
+    ) => Promise<Movie[]>;
+    param: string;
+    currentUserId: string;
+    sortBy: string;
 }
 
 

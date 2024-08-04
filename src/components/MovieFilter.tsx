@@ -7,12 +7,12 @@ import { Genre } from "@/lib/types/types";
 import Link from "next/link";
 import genres from "@/lib/genres.json";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
-import { SelectSort } from "./SelectSort";
-import { MobileSelectSort } from "./MobileSelectSort";
+import { SelectSortBy } from "./filter components/SelectSortBy";
 import { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import CurrentFilters from "./filter components/CurrentFilters";
 
-export default function GenreFilter({
+export default function MovieFilter({
   className,
   children,
 }: {
@@ -26,8 +26,11 @@ export default function GenreFilter({
   const createQueryString = useCallback(
     (name: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
+      const existingValues = params.get(name)?.split(",") || [];
+      if (!existingValues.includes(value)) {
+        existingValues.push(value);
+      }
+      params.set(name, existingValues.join(","));
       return params.toString();
     },
     [searchParams],
@@ -35,9 +38,12 @@ export default function GenreFilter({
 
   if (isDesktop) {
     return (
-      <div className={`mt-4 flex justify-start gap-2`}>
-        {children}
-        <SelectSort />
+      <div className={`mt-4 flex justify-between gap-2`}>
+        <div className="flex gap-2">
+          {children}
+          <CurrentFilters />
+        </div>
+        <SelectSortBy />
       </div>
     );
   } else {
@@ -54,6 +60,10 @@ export default function GenreFilter({
             side="left"
             className="flex w-[270px] flex-col gap-3 text-left"
           >
+            <div className="text-md font-semibold">Sort by: </div>
+            <div>
+              <SelectSortBy />
+            </div>
             <div className="text-md font-semibold">Filter by: </div>
             <div className="grid grid-cols-2 gap-1">
               {genres.map((genre: Genre) => (
@@ -67,8 +77,10 @@ export default function GenreFilter({
                 </Link>
               ))}
             </div>
-            <div className="text-md font-semibold">Sort by: </div>
-            <MobileSelectSort />
+            <div className="text-md font-semibold">Current Filters:</div>
+            <div className="max-w-[300px] overflow-auto">
+              <CurrentFilters />
+            </div>
           </SheetContent>
         </Sheet>
       </div>

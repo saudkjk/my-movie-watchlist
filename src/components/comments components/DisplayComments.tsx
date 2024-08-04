@@ -1,6 +1,6 @@
 "use server";
 import Image from "next/image";
-import DeleteComment from "@/components/DeleteComment";
+import DeleteComment from "@/components/Browsing Watchlists Components/DeleteComment";
 import { getUserWatchlistComments } from "@/lib/actions/database";
 import { CommentsProps, User, Comment, UserComment } from "@/lib/types/types";
 

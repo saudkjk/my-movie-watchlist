@@ -1,24 +1,18 @@
 "use client";
-import genres from "@/lib/genres.json";
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import React, { useCallback } from "react";
-import Link from "next/link";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { ChevronDown } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
+import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import Link from "next/link";
 
-type Genre = {
-  id: number;
-  name: string;
-};
-
-export default function GenreNav() {
+export function SelectSortBy() {
+  const params = useSearchParams();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -31,29 +25,39 @@ export default function GenreNav() {
     },
     [searchParams],
   );
+
   return (
     <Popover>
       <PopoverTrigger>
         <Button variant="outline" className="w-[120px]">
           <div className={"flex w-full items-center justify-between"}>
-            Genre
+            {params.get("sortBy")
+              ? params.get("sortBy") === "popularity.desc"
+                ? "Popularity"
+                : "Rating"
+              : "Sort By"}
             <ChevronDown className="h-4 w-4 opacity-50" />
           </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="z-50 p-2">
-        <div className="grid grid-cols-2 gap-1">
-          {genres.map((genre: Genre) => (
-            <div key={genre.id}>
-              <Link
-                legacyBehavior
-                passHref
-                href={pathname + "?" + createQueryString("genre", genre.name)}
-              >
-                <a className={navigationMenuTriggerStyle()}>{genre.name}</a>
-              </Link>
-            </div>
-          ))}
+        <div className="flex gap-2">
+          <Link
+            href={
+              pathname + "?" + createQueryString("sortBy", "popularity.desc")
+            }
+            className={navigationMenuTriggerStyle()}
+          >
+            Popularity
+          </Link>
+          <Link
+            href={
+              pathname + "?" + createQueryString("sortBy", "vote_average.desc")
+            }
+            className={navigationMenuTriggerStyle()}
+          >
+            Rating
+          </Link>
         </div>
       </PopoverContent>
     </Popover>

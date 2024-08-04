@@ -2,8 +2,8 @@
   { "path": "/", "name": "Home" },
   { "path": "/trending", "name": "Trending Movies" },
   { "path": "/toprated", "name": "Top Rated Movies" },
-  { "path": "/genre", "name": "Browse By Genre" },
+  { "path": "/genre", "name": "Browse Movies" },
   { "path": "/browse", "name": "Browse Watchlists" },
   { "path": "/watchlist", "name": "Watchlist" },
-  { "path": "/completed", "name": "Completed" }
+  { "path": "/completed", "name": "Completed" } 
 ]
