@@ -42,15 +42,14 @@ export default function DisplayInfiniteMovies({
 
   return (
     <>
-      <div className="flex flex-wrap justify-center">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {data.map((movie, index) => (
-          <div key={movie.id}>
-            <MovieCard
-              movie={movie}
-              currentUserId={currentUserId}
-              isLCP={index === 0}
-            />
-          </div>
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            currentUserId={currentUserId}
+            isLCP={index === 0}
+          />
         ))}
       </div>
       <div ref={ref}></div>

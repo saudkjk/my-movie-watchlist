@@ -10,11 +10,11 @@ import links from "@/lib/links.json";
 
 export default async function MobileNav({ className }: { className?: string }) {
   return (
-    <div className={`ml-2 mt-1 flex justify-start ${className}`}>
+    <div className={`flex flex-1 justify-start ${className}`}>
       <Sheet>
         <SheetTrigger asChild>
           <button aria-label="Open navigation">
-            <MdOutlineMenu className="ml-2 text-3xl" />
+            <MdOutlineMenu className="text-3xl" />
           </button>
         </SheetTrigger>
         <SheetContent

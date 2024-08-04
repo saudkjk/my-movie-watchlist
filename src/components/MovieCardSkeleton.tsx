@@ -2,14 +2,10 @@
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default async function MovieCardSkeleton({
-  numberOfSkeletons,
-}: {
-  numberOfSkeletons: number;
-}) {
+export default async function MovieCardSkeleton({ count }: { count: number }) {
   return (
     <div className="mt-10 flex flex-wrap justify-center sm:container sm:mx-auto">
-      {Array.from({ length: numberOfSkeletons }).map((_, index) => (
+      {Array.from({ length: count }).map((_, index) => (
         <div
           key={index}
           className="mt-1 flex h-56 w-44 flex-col p-2 sm:m-1 sm:my-4 sm:h-80 sm:w-60 sm:p-0"

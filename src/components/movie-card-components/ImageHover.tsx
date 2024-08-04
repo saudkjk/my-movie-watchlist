@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ImageHoverProps } from "@/lib/types/types";
 
 export const ImageHover = ({
-  imageUrl,
+  imageURL,
   children,
   childrenClassName,
   className,
@@ -13,16 +13,19 @@ export const ImageHover = ({
   return (
     <div
       className={cn(
-        "group relative inset-0 h-full w-full overflow-hidden rounded-lg bg-transparent shadow-md shadow-black/40 dark:shadow-sm dark:shadow-gray-700/50",
+        "group relative inset-0 mx-auto h-full w-full max-w-xs overflow-hidden rounded-lg bg-transparent pb-[150%] shadow-md shadow-black/40 dark:shadow-sm dark:shadow-gray-700/50",
         className,
       )}
     >
       <Image
+        src={imageURL}
         alt="movie poster"
-        className={`transform brightness-90 transition duration-500 ease-in-out sm:brightness-100 sm:group-hover:scale-[1.10] sm:group-hover:brightness-75`}
         fill
-        src={imageUrl}
-        sizes="(max-width: 480px) 35vw, (max-width: 768px) 30vw, (max-width: 992px) 25vw, (max-width: 1200px) 20vw, (max-width: 1600px) 15vw, 10vw"
+        style={{
+          objectFit: "cover",
+        }}
+        sizes="(min-width: 1540px) 248px, (min-width: 1280px) calc(10vw + 96px), (min-width: 1040px) calc(25vw - 36px), (min-width: 780px) calc(33.33vw - 43px), calc(49.13vw - 53px)"
+        className={`absolute left-0 top-0 h-full w-full transform brightness-90 transition duration-500 ease-in-out sm:brightness-100 sm:group-hover:scale-[1.10] sm:group-hover:brightness-75`}
         quality={80}
         priority={isLCP}
       />

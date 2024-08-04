@@ -2,5 +2,5 @@
 import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 
 export default async function Page() {
-  return <MovieCardSkeleton numberOfSkeletons={10} />;
+  return <MovieCardSkeleton count={10} />;
 }

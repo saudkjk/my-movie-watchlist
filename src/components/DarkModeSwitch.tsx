@@ -12,7 +12,7 @@ export default function DarkModeSwitch() {
   };
 
   return (
-    <div className="mr-3 flex items-center justify-center transition duration-500 ease-in-out md:ml-3">
+    <div className="flex items-center justify-center transition duration-500 ease-in-out">
       {currentTheme === "dark" ? (
         <MdLightMode
           onClick={() => handleClick("light")}

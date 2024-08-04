@@ -15,56 +15,58 @@ import {
 
 export default async function DesktopNav() {
   return (
-    <NavigationMenu className="justify-center gap-4 py-2">
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger className="bg-transparent">
-            Movies
-          </NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[200px] grid-cols-1 gap-3 p-3">
-              <ListItem
-                href="/trending"
-                title="Trending"
-                className="flex justify-center align-middle"
-              ></ListItem>
-              <ListItem
-                href="/toprated"
-                title="Top Rated"
-                className="flex justify-center align-middle"
-              ></ListItem>
-              <ListItem
-                href="/genre"
-                title="By Genre"
-                className="flex justify-center align-middle"
-              ></ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="bg-transparent">
-          <Link href="/browse" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Browse Watchlists
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/watchlist" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Watchlist
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
+    <>
+      <NavigationMenu className="justify-center gap-4">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger className="bg-transparent">
+              Movies
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[200px] grid-cols-1 gap-3 p-3">
+                <ListItem
+                  href="/trending"
+                  title="Trending"
+                  className="flex justify-center align-middle"
+                ></ListItem>
+                <ListItem
+                  href="/toprated"
+                  title="Top Rated"
+                  className="flex justify-center align-middle"
+                ></ListItem>
+                <ListItem
+                  href="/genre"
+                  title="By Genre"
+                  className="flex justify-center align-middle"
+                ></ListItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem className="bg-transparent">
+            <Link href="/browse" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Browse Watchlists
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <Link href="/watchlist" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Watchlist
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <Link href="/completed" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Completed
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+          <NavigationMenuItem>
+            <Link href="/completed" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                Completed
+              </NavigationMenuLink>
+            </Link>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </>
   );
 }
 

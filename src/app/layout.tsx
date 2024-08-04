@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/app/ThemeProvider";
-import Header from "@/components/Header";
+import Navbar from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -34,11 +34,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-
-            <main className="px-4 py-4 sm:container sm:mx-auto">
-              {children}
-            </main>
+            <Navbar />
+            <main className="container mx-auto">{children}</main>
           </ThemeProvider>
         </body>
       </html>

@@ -38,7 +38,7 @@ export default function MovieFilter({
 
   if (isDesktop) {
     return (
-      <div className={`mt-4 flex justify-between gap-2`}>
+      <div className={`container mt-4 flex justify-between gap-2`}>
         <div className="flex gap-2">
           {children}
           <CurrentFilters />

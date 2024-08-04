@@ -37,7 +37,7 @@ export type MovieCardProps = {
 
 
 export type ImageHoverProps = {
-    imageUrl: string;
+    imageURL: string;
     children: React.ReactNode | string;
     childrenClassName?: string;
     className?: string;

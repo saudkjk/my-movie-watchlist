@@ -200,6 +200,7 @@ export async function changeVisibility(userId: string) {
             where: { userId: userId },
             data: { watchlistVisibility: newVisibility }
         });
+        revalidatePath('/');
         return { status: 200, message: "Visibility updated successfully", newVisibility: newVisibility };
     } catch (error) {
         console.error('Error updating visibility:', error);
