@@ -9,6 +9,7 @@ export default async function page() {
     "toprated",
     1,
     currentUserId,
+    "popularity.desc",
   );
   return (
     <>
