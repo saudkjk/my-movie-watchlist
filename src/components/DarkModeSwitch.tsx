@@ -1,7 +1,7 @@
 "use client";
-import { MdLightMode, MdDarkMode } from "react-icons/md";
 import { useTheme } from "next-themes";
 import { SetStateAction } from "react";
+import { Moon, Sun } from "lucide-react";
 
 export default function DarkModeSwitch() {
   const { theme, setTheme, systemTheme } = useTheme();
@@ -12,16 +12,16 @@ export default function DarkModeSwitch() {
   };
 
   return (
-    <div className="flex items-center justify-center transition duration-500 ease-in-out">
+    <div className="flex items-center justify-center">
       {currentTheme === "dark" ? (
-        <MdLightMode
+        <Sun
           onClick={() => handleClick("light")}
-          className="transform cursor-pointer text-3xl transition duration-500 ease-in-out hover:scale-125"
+          className="h-7 w-7 cursor-pointer"
         />
       ) : (
-        <MdDarkMode
+        <Moon
           onClick={() => handleClick("dark")}
-          className="transform cursor-pointer text-3xl transition duration-500 ease-in-out hover:scale-125"
+          className="h-7 w-7 cursor-pointer"
         />
       )}
     </div>

@@ -22,7 +22,7 @@ export default function ChangeVisibilitySwitch({
 
   return (
     <>
-      <div className="flex items-center gap-2 mt-4">
+      <div className="mb-1 flex items-center gap-2">
         <Label htmlFor="watchlist-visibility">
           {visibility ? "Public" : "Private"}
         </Label>

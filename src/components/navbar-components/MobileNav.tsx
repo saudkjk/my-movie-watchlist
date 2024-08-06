@@ -1,5 +1,5 @@
 "use server";
-import { MdOutlineMenu } from "react-icons/md";
+import { IoMenuSharp } from "react-icons/io5";
 import {
   Sheet,
   SheetClose,
@@ -7,19 +7,20 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import links from "@/lib/links.json";
+import DarkModeSwitch from "../DarkModeSwitch";
 
 export default async function MobileNav({ className }: { className?: string }) {
   return (
-    <div className={`flex flex-1 justify-start ${className}`}>
+    <div className={`flex justify-start ${className}`}>
       <Sheet>
         <SheetTrigger asChild>
           <button aria-label="Open navigation">
-            <MdOutlineMenu className="text-3xl" />
+            <IoMenuSharp className="text-3xl" />
           </button>
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="flex w-[230px] flex-col gap-2 text-center sm:w-[300px] sm:gap-1 sm:text-left"
+          className="flex w-[230px] flex-col gap-2 text-center"
         >
           {links.map((link) => (
             <SheetClose asChild key={link.path}>
@@ -31,6 +32,7 @@ export default async function MobileNav({ className }: { className?: string }) {
               </a>
             </SheetClose>
           ))}
+          <DarkModeSwitch />
         </SheetContent>
       </Sheet>
     </div>

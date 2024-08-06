@@ -1,9 +1,10 @@
 "use client";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -12,7 +13,6 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 
 export function SelectSortBy() {
-  const params = useSearchParams();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -27,39 +27,37 @@ export function SelectSortBy() {
   );
 
   return (
-    <Popover>
-      <PopoverTrigger>
-        <Button variant="outline" className="w-[120px]">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" className="w-[160px]">
           <div className={"flex w-full items-center justify-between"}>
-            {params.get("sortBy")
-              ? params.get("sortBy") === "popularity.desc"
-                ? "Popularity"
-                : "Rating"
-              : "Sort By"}
+            {searchParams.get("sort") === "vote_average.desc"
+              ? "Sort: Rating"
+              : "Sort: Popularity"}
             <ChevronDown className="h-4 w-4 opacity-50" />
           </div>
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="z-50 p-2">
-        <div className="flex gap-2">
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="z-50 w-[160px] p-2">
+        <DropdownMenuItem asChild>
           <Link
-            href={
-              pathname + "?" + createQueryString("sortBy", "popularity.desc")
-            }
+            href={pathname + "?" + createQueryString("sort", "popularity.desc")}
             className={navigationMenuTriggerStyle()}
           >
             Popularity
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link
             href={
-              pathname + "?" + createQueryString("sortBy", "vote_average.desc")
+              pathname + "?" + createQueryString("sort", "vote_average.desc")
             }
             className={navigationMenuTriggerStyle()}
           >
             Rating
           </Link>
-        </div>
-      </PopoverContent>
-    </Popover>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

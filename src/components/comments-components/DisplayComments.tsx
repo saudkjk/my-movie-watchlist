@@ -2,7 +2,8 @@
 import Image from "next/image";
 import { getUserWatchlistComments } from "@/lib/actions/database";
 import { CommentsProps, User, Comment, UserComment } from "@/lib/types/types";
-import DeleteComment from "@/components/comments-components/DeleteComment";
+// import DeleteComment from "@/components/comments-components/DeleteComment";
+import PageTitle from "../PageTitle";
 
 export default async function DisplayComments({
   currentWatchlistUserId,
@@ -36,6 +37,7 @@ export default async function DisplayComments({
 
   return (
     <div className="mx-auto my-4 mt-7 flex max-w-[600px] flex-col gap-4 md:mx-20 md:max-w-[100%]">
+      <div className="text-lg font-semibold">Comments:</div>
       {userComments?.map(({ user, comment }) => (
         <div
           key={comment.id}
@@ -61,9 +63,10 @@ export default async function DisplayComments({
             </div>
             {comment.comment}
           </div>
-          {currentUserId === comment.userId && (
-            <DeleteComment commentId={comment.id} />
-          )}
+          {
+            currentUserId === comment.userId && <div></div>
+            // <DeleteComment commentId={comment.id} />
+          }
         </div>
       ))}
     </div>

@@ -10,7 +10,7 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { SelectSortBy } from "@/components/filter-components/SelectSortBy";
 import { useCallback } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import CurrentFilters from "@/components/filter-components/CurrentFilters";
+import ResetFilters from "./filter-components/ResetFilters";
 
 export default function MovieFilter({
   className,
@@ -25,12 +25,18 @@ export default function MovieFilter({
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams);
       const existingValues = params.get(name)?.split(",") || [];
       if (!existingValues.includes(value)) {
         existingValues.push(value);
+      } else {
+        existingValues.splice(existingValues.indexOf(value), 1);
       }
-      params.set(name, existingValues.join(","));
+      if (existingValues.length > 0) {
+        params.set(name, existingValues.join(","));
+      } else {
+        params.delete(name);
+      }
       return params.toString();
     },
     [searchParams],
@@ -38,32 +44,35 @@ export default function MovieFilter({
 
   if (isDesktop) {
     return (
-      <div className={`container mt-4 flex justify-between gap-2`}>
+      <div className={`mb-4 mt-8 flex justify-between`}>
         <div className="flex gap-2">
           {children}
-          <CurrentFilters />
+          {searchParams.size > 0 && <ResetFilters />}
         </div>
         <SelectSortBy />
       </div>
     );
   } else {
     return (
-      <div className={`mt-4 flex justify-start ${className}`}>
+      <div className={`mb-4 mt-4 flex justify-start gap-1 ${className}`}>
         <Sheet>
           <SheetTrigger asChild>
-            <Button aria-label="Open navigation" className="m-0 p-1 pr-3">
+            <Button
+              variant="outline"
+              aria-label="Open navigation"
+              className="h-9 p-1 px-3 pr-3"
+            >
               <CiFilter className="text-3xl" />
               <span>Filters</span>
             </Button>
           </SheetTrigger>
+          {searchParams.size > 0 && <ResetFilters />}
           <SheetContent
             side="left"
             className="flex w-[270px] flex-col gap-3 text-left"
           >
-            <div className="text-md font-semibold">Sort by: </div>
-            <div>
-              <SelectSortBy />
-            </div>
+            <SelectSortBy />
+
             <div className="text-md font-semibold">Filter by: </div>
             <div className="grid grid-cols-2 gap-1">
               {genres.map((genre: Genre) => (
@@ -73,13 +82,14 @@ export default function MovieFilter({
                   passHref
                   href={pathname + "?" + createQueryString("genre", genre.name)}
                 >
-                  <a className={navigationMenuTriggerStyle()}>{genre.name}</a>
+                  <a className={navigationMenuTriggerStyle()}>
+                    {genre.name}
+                    {searchParams.get("genre")?.includes(genre.name) && (
+                      <span className="ml-1 text-red-500">x</span>
+                    )}
+                  </a>
                 </Link>
               ))}
-            </div>
-            <div className="text-md font-semibold">Current Filters:</div>
-            <div className="max-w-[300px] overflow-auto">
-              <CurrentFilters />
             </div>
           </SheetContent>
         </Sheet>

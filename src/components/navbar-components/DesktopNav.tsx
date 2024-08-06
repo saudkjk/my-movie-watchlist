@@ -23,21 +23,21 @@ export default async function DesktopNav() {
               Movies
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[200px] grid-cols-1 gap-3 p-3">
+              <ul className="grid w-[170px] grid-cols-1 gap-3 p-2">
                 <ListItem
                   href="/trending"
                   title="Trending"
-                  className="flex justify-center align-middle"
+                  className={navigationMenuTriggerStyle()}
                 ></ListItem>
                 <ListItem
                   href="/toprated"
                   title="Top Rated"
-                  className="flex justify-center align-middle"
+                  className={navigationMenuTriggerStyle()}
                 ></ListItem>
                 <ListItem
                   href="/genre"
                   title="By Genre"
-                  className="flex justify-center align-middle"
+                  className={navigationMenuTriggerStyle()}
                 ></ListItem>
               </ul>
             </NavigationMenuContent>
@@ -85,8 +85,8 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          <div className={navigationMenuTriggerStyle()}>{title}</div>
+          <p className="line-clamp-2 text-lg leading-snug text-muted-foreground">
             {children}
           </p>
         </a>

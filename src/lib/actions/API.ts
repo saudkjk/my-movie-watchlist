@@ -82,7 +82,7 @@ export async function fetchMoviesTopOrTrendingWithDbStatus(genre: string, page: 
 export async function fetchMoviesByGenre(genreIds: string, page: number, sortBy: string) {
   // get movies by genre
   const res = await fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=en-US&page=${page}&with_genres=${genreIds}&sort_by=${sortBy}&vote_count.gte=50}`
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=en-US&page=${page}&with_genres=${genreIds}&sort_by=${sortBy}&vote_count.gte=100}`
   );
   const data = await res.json();
   if (!res.ok) {
@@ -109,6 +109,44 @@ export async function fetchMoviesByGenre(genreIds: string, page: number, sortBy:
 export async function fetchMoviesByGenreWithDbStatus(genreIds: string, page: number, currentUserId: string, sortBy: string) {
 
   const results = await fetchMoviesByGenre(genreIds, page, sortBy);
+
+  const updatedRes = currentUserId
+    ? await updateWithDbStatus(String(currentUserId), results)
+    : results;
+  return updatedRes;
+}
+
+
+export async function fetchMoviesGeneral(page: number, sortBy: string) {
+  // get movies by genre
+  const res = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_API_KEY}&language=en-US&page=${page}&sort_by=${sortBy}&vote_count.gte=100}`
+  );
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  // get runtime
+  const results = await Promise.all(
+    data.results.map(async (movie: any) => {
+      const movieRes = await fetch(
+        `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${TMDB_API_KEY}&language=en-US`
+      );
+      const movieData = await movieRes.json();
+      return {
+        ...movie,
+        runtime: movieData.runtime,
+      };
+    })
+  );
+
+  return results;
+}
+
+export async function fetchMoviesGeneralWithDbStatus(genreIds: string, page: number, currentUserId: string, sortBy: string) {
+
+  const results = await fetchMoviesGeneral(page, sortBy);
 
   const updatedRes = currentUserId
     ? await updateWithDbStatus(String(currentUserId), results)

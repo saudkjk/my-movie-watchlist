@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import {
   fetchMoviesByGenreWithDbStatus,
+  fetchMoviesGeneralWithDbStatus,
   fetchMoviesTopOrTrendingWithDbStatus,
 } from "@/lib/actions/API";
 import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
@@ -13,13 +14,13 @@ import GenreFilter from "@/components/filter-components/GenreFilter";
 type PageProps = {
   searchParams: {
     genre: string;
-    sortBy: string;
+    sort: string;
   };
 };
 
 export default async function Page({ searchParams }: PageProps) {
   const genre = searchParams.genre;
-  const sortBy = searchParams.sortBy || "popularity.desc";
+  const sortBy = searchParams.sort || "popularity.desc";
   const currentUserId = (await auth().userId) || "";
 
   let genreMovies, param, title, fetchMoviesWithDbStatus;
@@ -49,14 +50,14 @@ export default async function Page({ searchParams }: PageProps) {
     fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
     param = genreIdsStr;
   } else {
-    genreMovies = await fetchMoviesTopOrTrendingWithDbStatus(
-      "trending",
+    genreMovies = await fetchMoviesGeneralWithDbStatus(
+      "movies",
       1,
       currentUserId,
       sortBy,
     );
-    fetchMoviesWithDbStatus = fetchMoviesTopOrTrendingWithDbStatus;
-    param = "trending";
+    fetchMoviesWithDbStatus = fetchMoviesGeneralWithDbStatus;
+    param = "movies";
   }
 
   return (

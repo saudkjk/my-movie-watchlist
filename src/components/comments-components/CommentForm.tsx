@@ -15,7 +15,7 @@ export default function CommentSection({
   const ref = useRef<HTMLFormElement>(null);
 
   const boundAddComment = addComment.bind(null, currentUserId, targetUserId);
-  const [state, formAction, isPending] = useActionState(boundAddComment, null);
+  // const [state, formAction, isPending] = useActionState(boundAddComment, null);
 
   return (
     <div className="mx-auto mt-7 grid max-w-[600px] gap-2 md:mx-20 md:max-w-[100%]">
@@ -30,7 +30,8 @@ export default function CommentSection({
         Your comment is public and will be viewable by everyone
       </p>
 
-      <form action={formAction} ref={ref}>
+      {/* <form action={formAction} ref={ref}> */}
+      <form ref={ref}>
         <Textarea
           name="comment"
           placeholder="Type your comment here."
@@ -40,9 +41,9 @@ export default function CommentSection({
 
         {isSignedIn ? (
           <div className="mt-2 flex justify-end gap-2">
-            <Button type="submit" disabled={isPending}>
+            {/* <Button type="submit" disabled={isPending}>
               {isPending ? "Submitting..." : "Comment"}
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <SignInButton

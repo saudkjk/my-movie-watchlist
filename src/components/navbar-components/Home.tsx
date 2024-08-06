@@ -13,9 +13,9 @@ export default async function NavbarLinks({
     //   </a>
     // </div>
     <a href="/">
-      <div className="flex flex-col items-center text-base font-bold">
+      <div className="ml-2 mr-2 -mt-0.5 flex flex-col items-center text-sm font-bold md:ml-0 md:text-base">
         MyMovie
-        <span className="-mt-1.5 inline-block bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+        <span className="-mt-2 inline-block bg-gradient-to-r from-blue-500 via-pink-500 to-blue-500 bg-clip-text text-transparent">
           Watchlist
         </span>
       </div>

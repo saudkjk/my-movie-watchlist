@@ -24,12 +24,18 @@ export default function GenreFilter() {
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams);
       const existingValues = params.get(name)?.split(",") || [];
       if (!existingValues.includes(value)) {
         existingValues.push(value);
+      } else {
+        existingValues.splice(existingValues.indexOf(value), 1);
       }
-      params.set(name, existingValues.join(","));
+      if (existingValues.length > 0) {
+        params.set(name, existingValues.join(","));
+      } else {
+        params.delete(name);
+      }
       return params.toString();
     },
     [searchParams],
@@ -37,15 +43,15 @@ export default function GenreFilter() {
   return (
     <Popover>
       <PopoverTrigger>
-        <Button variant="outline" className="w-[120px]">
-          <div className={"flex w-full items-center justify-between"}>
+        <Button variant="outline">
+          <div className={"flex items-center"}>
             Genre
-            <ChevronDown className="h-4 w-4 opacity-50" />
+            <ChevronDown className="mt-0.5 h-4 w-4 opacity-50" />
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="z-50 p-2">
-        <div className="grid grid-cols-2 gap-1">
+      <PopoverContent className="z-50 w-[500px] p-2">
+        <div className="grid grid-cols-5">
           {genres.map((genre: Genre) => (
             <div key={genre.id}>
               <Link
@@ -53,7 +59,12 @@ export default function GenreFilter() {
                 passHref
                 href={pathname + "?" + createQueryString("genre", genre.name)}
               >
-                <a className={navigationMenuTriggerStyle()}>{genre.name}</a>
+                <a className={navigationMenuTriggerStyle()}>
+                  {genre.name}
+                  {searchParams.get("genre")?.includes(genre.name) && (
+                    <span className="ml-1 text-red-500">x</span>
+                  )}
+                </a>
               </Link>
             </div>
           ))}
