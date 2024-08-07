@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { getCompletedMoviesIds } from "@/lib/actions/database";
-import { fetchMoviesByIds } from "@/lib/actions/API";
+import { fetchMoviesByIdsWithDbStatus } from "@/lib/actions/API";
 import PageTitle from "@/components/PageTitle";
 import DisplayMovies from "@/components/DisplayMovies";
 
@@ -10,7 +10,10 @@ export default async function Page() {
   const currentUserId = (await auth().userId) || "";
 
   const completedMoviesIds = await getCompletedMoviesIds(currentUserId);
-  const completedMovies = await fetchMoviesByIds(completedMoviesIds);
+  const completedMovies = await fetchMoviesByIdsWithDbStatus(
+    completedMoviesIds,
+    currentUserId,
+  );
 
   return (
     <>

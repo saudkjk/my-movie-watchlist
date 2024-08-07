@@ -20,7 +20,7 @@ export default async function Navbar() {
         <div className="mr-2 flex justify-end gap-2 md:mr-0 md:gap-1 lg:text-lg">
           <SearchForm />
           <AuthButtons />
-          <div className="hidden md:flex">
+          <div className="hidden md:flex ml-1">
             <DarkModeSwitch />
           </div>
         </div>
@@ -28,48 +28,3 @@ export default async function Navbar() {
     </>
   );
 }
-// export default async function Navbar() {
-//   return (
-//     <>
-//       <div className="container z-50 flex items-center justify-between bg-white pt-2 dark:bg-slate-950">
-//         <div className="flex flex-1 md:flex-none">
-//           <MobileNav className="flex-1 md:hidden" />
-//           <Home className="flex-1 text-center md:flex-none" />
-//         </div>
-//         <div className="ml-4 hidden gap-2 md:flex md:flex-1">
-//           <DesktopNav />
-//         </div>
-//         <div className="flex flex-1 justify-end gap-2 md:gap-1 lg:text-lg">
-//           <SearchForm />
-//           <AuthButtons />
-//           <div className="hidden md:flex">
-//             <DarkModeSwitch />
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default async function Navbar() {
-//   return (
-//     <>
-//       <div className="container z-50 flex items-center justify-between bg-white pt-2 dark:bg-slate-950">
-//         <MobileNav className="flex-1 md:hidden" />
-//         <div className="flex md:flex-none">
-//           <Home className="flex-1 text-center md:flex-none" />
-//         </div>
-//         <div className="ml-4 hidden gap-2 md:flex md:flex-1">
-//           <DesktopNav />
-//         </div>
-//         <div className="flex flex-1 justify-end gap-2 md:flex-none md:gap-1 lg:text-lg">
-//           <SearchForm />
-//           <AuthButtons />
-//           <div className="hidden md:flex">
-//             <DarkModeSwitch />
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }

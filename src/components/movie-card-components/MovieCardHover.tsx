@@ -3,7 +3,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { ImageHoverProps } from "@/lib/types/types";
 
-export const ImageHover = ({
+export const MovieCardHover = ({
   imageURL,
   children,
   childrenClassName,

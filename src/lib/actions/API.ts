@@ -179,6 +179,14 @@ export async function fetchMoviesByIds(movies: any[]) {
   return results.filter(result => result !== null);
 }
 
+export async function fetchMoviesByIdsWithDbStatus(movies: any[], currentUserId: string) {
+  const results = await fetchMoviesByIds(movies);
+  const updatedRes = currentUserId
+    ? await updateWithDbStatus(String(currentUserId), results)
+    : results;
+  return updatedRes;
+}
+
 export const getMovieRecommendations = async (movies: any[]) => {
   const prompt = `${movies.map(movie => movie.title).join(', ')}`;
 

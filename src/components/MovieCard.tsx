@@ -3,7 +3,7 @@ import React from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Link from "next/link";
 import { MovieCardProps } from "@/lib/types/types";
-import { ImageHover } from "@/components/movie-card-components/ImageHover";
+import { MovieCardHover } from "@/components/movie-card-components/MovieCardHover";
 import { WatchlistButton } from "@/components/movie-card-components/WatchlistButton";
 import { CompletedButton } from "@/components/movie-card-components/CompletedButton";
 function MovieCard({ movie, currentUserId, isLCP }: MovieCardProps) {
@@ -11,7 +11,7 @@ function MovieCard({ movie, currentUserId, isLCP }: MovieCardProps) {
   if (imageURL.endsWith("null")) imageURL = "/posterPlaceHolder.jpg";
 
   return (
-    <ImageHover imageURL={imageURL} isLCP={isLCP}>
+    <MovieCardHover imageURL={imageURL} isLCP={isLCP}>
       <p className="text-xs font-bold sm:text-xl">
         <Link
           href={`https://www.google.com/search?q=${movie.title} movie&newwindow=1`}
@@ -32,7 +32,7 @@ function MovieCard({ movie, currentUserId, isLCP }: MovieCardProps) {
           <CompletedButton currentUserId={currentUserId} movie={movie} />
         </div>
       </TooltipProvider>
-    </ImageHover>
+    </MovieCardHover>
   );
 }
 // stops re-rendering when infinitely scrolling through movies
