@@ -3,13 +3,11 @@ import genres from "@/lib/genres.json";
 import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import React, { useCallback } from "react";
 import Link from "next/link";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -24,33 +22,48 @@ export default function GenreFilter() {
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      const existingValues = params.get(name)?.split(",") || [];
-      if (!existingValues.includes(value)) {
-        existingValues.push(value);
-      } else {
-        existingValues.splice(existingValues.indexOf(value), 1);
-      }
-      if (existingValues.length > 0) {
-        params.set(name, existingValues.join(","));
-      } else {
+      const params = new URLSearchParams(searchParams.toString());
+      const currentValue = params.get(name);
+
+      if (currentValue === value) {
+        // If the selected genre already exists, remove it
         params.delete(name);
+      } else {
+        // Otherwise, set the new genre (replacing any existing value)
+        params.set(name, value);
       }
+
       return params.toString();
     },
     [searchParams],
   );
+
   return (
     <Popover>
       <PopoverTrigger>
-        <Button variant="outline">
-          <div className={"flex items-center"}>
-            Genre
-            <ChevronDown className="mt-0.5 h-4 w-4 opacity-50" />
-          </div>
-        </Button>
+        <div className={"flex items-center gap-1 text-slate-200"}>
+          {searchParams.get("genre") ? (
+            <div
+              className={`flex items-center justify-center gap-2 rounded-full bg-secondary-color px-4 py-2 transition duration-300 ease-in-out hover:bg-secondary-color-dark active:bg-secondary-color-darkest`}
+            >
+              <span className="flex items-center text-2xl font-medium">
+                {searchParams.get("genre")}
+              </span>
+              <ChevronDown className="mt-1 h-7 w-7" />
+            </div>
+          ) : (
+            <div
+              className={`flex items-center justify-center gap-2 rounded-full bg-secondary-color px-4 py-2 transition duration-300 ease-in-out hover:bg-secondary-color-dark active:bg-secondary-color-darkest`}
+            >
+              <span className="flex items-center text-2xl font-medium">
+                Genre
+              </span>
+              <ChevronDown className="mt-1 h-7 w-7" />
+            </div>
+          )}
+        </div>
       </PopoverTrigger>
-      <PopoverContent className="z-50 w-[500px] p-2">
+      <PopoverContent className="z-50 w-[620px] bg-[#312F2F]/95 p-2 md:mx-[8%]">
         <div className="grid grid-cols-5">
           {genres.map((genre: Genre) => (
             <div key={genre.id}>

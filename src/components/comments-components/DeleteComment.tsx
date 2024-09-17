@@ -1,17 +1,32 @@
-// "use client";
-// import { removeComment } from "@/lib/actions/database";
-// import { useActionState } from "react";
+"use client";
+import { useState } from "react";
+import { removeComment } from "@/lib/actions/database";
 
-// export default function DeleteComment({ commentId }: { commentId: string }) {
-//   const [state, action, isPending] = useActionState(removeComment, null);
+export default function DeleteComment({
+  commentId,
+  userId,
+}: {
+  commentId: string;
+  userId: string;
+}) {
+  const [isPending, setIsPending] = useState(false);
 
-//   return (
-//     <button
-//       onClick={() => action(commentId)}
-//       className="self-end text-red-500"
-//       disabled={isPending}
-//     >
-//       {isPending ? "Deleting..." : "Delete"}
-//     </button>
-//   );
-// }
+  const handleDelete = async () => {
+    setIsPending(true);
+    try {
+      await removeComment(commentId, userId);
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleDelete}
+      className={`self-end text-red-500 hover:text-red-600 ${isPending ? "cursor-not-allowed opacity-50" : ""}`}
+      disabled={isPending}
+    >
+      {isPending ? "Deleting..." : "Delete"}
+    </button>
+  );
+}

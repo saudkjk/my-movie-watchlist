@@ -1,5 +1,5 @@
-"use server";
+import MovieListCardSkeleton from "@/components/MovieListCardSkeleton";
 
 export default async function Page() {
-  return <h1>Loading Users...</h1>;
+  return <MovieListCardSkeleton />;
 }

@@ -1,56 +1,69 @@
-"use server";
-import { auth } from "@clerk/nextjs/server";
-import { fetchMoviesTopOrTrendingWithDbStatus } from "@/lib/actions/API";
-import PageTitle from "@/components/PageTitle";
-import Link from "next/link";
-import MovieRecommendations from "@/components/MovieRecommendations";
-import { Suspense } from "react";
-import MovieCardSkeleton from "@/components/MovieCardSkeleton";
-import MovieCardSwiper from "@/components/MovieCardSwiper";
-
+import { fetchMovies } from "@/lib/actions/API";
+import {
+  getAllPublicCustomLists,
+  updateWithDbStatus,
+} from "@/lib/actions/database";
+import MoviesCardCarousel from "@/components/movie-card-components/MoviesCardCarousel";
+import Hero from "@/components/hero-components/Hero";
+import TopMoviesCardCarousel from "@/components/movie-card-components/TopMoviesCardCarousel";
+import MovieListCardList from "@/components/movie-card-components/MovieListCardList";
+import { getUserInfo } from "@/lib/helpers";
 export default async function Page() {
-  const currentUserId = (await auth().userId) || "";
+  const { userId, username } = await getUserInfo();
 
-  const trendingMovies = await fetchMoviesTopOrTrendingWithDbStatus(
-    "trending",
-    1,
-    currentUserId,
-    "popularity.desc",
+  const popularMovies = await fetchMovies("popular", userId);
+  const popularMoviesWithDbStatus = await updateWithDbStatus(
+    userId,
+    popularMovies,
   );
-  const topRatedMovies = await fetchMoviesTopOrTrendingWithDbStatus(
-    "toprated",
-    1,
-    currentUserId,
-    "popularity.desc",
-  );
+
+  const publicCustomLists = await getAllPublicCustomLists();
 
   return (
     <>
-      <div className="flex items-center gap-2">
-        <PageTitle title="Trending" />
-        <Link
-          href="/trending"
-          className="mt-5 max-w-[90%] rounded-md bg-background px-2 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground md:mt-2 md:text-base"
-        >
-          see all
-        </Link>
-      </div>
-      <MovieCardSwiper movies={trendingMovies} currentUserId={currentUserId} />
+      <Hero
+        userId={userId}
+        movies={popularMoviesWithDbStatus}
+        username={username}
+      />
 
-      <div className="flex items-center gap-2">
-        <PageTitle title="Top Rated" />
-        <Link
-          href="/toprated"
-          className="mt-5 max-w-[90%] rounded-md bg-background px-2 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground md:mt-2 md:text-base"
-        >
-          see all
-        </Link>
-      </div>
-      <MovieCardSwiper movies={topRatedMovies} currentUserId={currentUserId} />
+      <MoviesCardCarousel
+        title={`POPULAR`}
+        movies={popularMoviesWithDbStatus}
+        userId={userId}
+        username={username}
+      ></MoviesCardCarousel>
 
-      <Suspense fallback={<MovieCardSkeleton count={3} />}>
-        <MovieRecommendations currentUserId={currentUserId} />
-      </Suspense>
+      <TopMoviesCardCarousel
+        title={`Top`}
+        movies={popularMoviesWithDbStatus.slice(0, 10)}
+      ></TopMoviesCardCarousel>
+
+      <MoviesCardCarousel
+        title={`POPULAR2`}
+        movies={popularMoviesWithDbStatus}
+        userId={userId}
+        username={username}
+      ></MoviesCardCarousel>
+
+      <MovieListCardList
+        title={`Popular Movie Lists`}
+        movieLists={publicCustomLists}
+      ></MovieListCardList>
+
+      <MoviesCardCarousel
+        title={`POPULAR3`}
+        movies={popularMoviesWithDbStatus}
+        userId={userId}
+        username={username}
+      ></MoviesCardCarousel>
+
+      <MoviesCardCarousel
+        title={`POPULAR4`}
+        movies={popularMoviesWithDbStatus}
+        userId={userId}
+        username={username}
+      ></MoviesCardCarousel>
     </>
   );
 }

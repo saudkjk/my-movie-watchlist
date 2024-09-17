@@ -1,15 +1,13 @@
-"use server";
 import genres from "@/lib/genres.json";
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import {
   fetchMoviesByGenreWithDbStatus,
   fetchMoviesGeneralWithDbStatus,
-  fetchMoviesTopOrTrendingWithDbStatus,
 } from "@/lib/actions/API";
 import DisplayInfiniteMovies from "@/components/DisplayInfiniteMovies";
-import MovieFilter from "@/components/MovieFilter";
 import GenreFilter from "@/components/filter-components/GenreFilter";
+import MovieFilter from "@/components/filter-components/MovieFilter";
+import { getUserInfo } from "@/lib/helpers";
 
 type PageProps = {
   searchParams: {
@@ -21,9 +19,9 @@ type PageProps = {
 export default async function Page({ searchParams }: PageProps) {
   const genre = searchParams.genre;
   const sortBy = searchParams.sort || "popularity.desc";
-  const currentUserId = (await auth().userId) || "";
+  const { userId, username } = await getUserInfo();
 
-  let genreMovies, param, title, fetchMoviesWithDbStatus;
+  let genreMovies, param, fetchMoviesWithDbStatus;
 
   if (genre) {
     // Split genres and find corresponding IDs
@@ -43,8 +41,7 @@ export default async function Page({ searchParams }: PageProps) {
 
     genreMovies = await fetchMoviesByGenreWithDbStatus(
       genreIdsStr,
-      1,
-      currentUserId,
+      userId,
       sortBy,
     );
     fetchMoviesWithDbStatus = fetchMoviesByGenreWithDbStatus;
@@ -52,8 +49,7 @@ export default async function Page({ searchParams }: PageProps) {
   } else {
     genreMovies = await fetchMoviesGeneralWithDbStatus(
       "movies",
-      1,
-      currentUserId,
+      userId,
       sortBy,
     );
     fetchMoviesWithDbStatus = fetchMoviesGeneralWithDbStatus;
@@ -62,16 +58,19 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <MovieFilter>
-        <GenreFilter />
-      </MovieFilter>
-      <DisplayInfiniteMovies
-        movies={genreMovies}
-        fetchMoviesWithDbStatus={fetchMoviesWithDbStatus}
-        param={param}
-        currentUserId={currentUserId}
-        sortBy={sortBy}
-      />
+      <div className="mx-[4%] mb-[15px] md:mx-[8%]">
+        <MovieFilter>
+          <GenreFilter />
+        </MovieFilter>
+        <DisplayInfiniteMovies
+          movies={genreMovies}
+          fetchMoviesWithDbStatus={fetchMoviesWithDbStatus}
+          param={param}
+          userId={userId}
+          sortBy={sortBy}
+          username={username}
+        />
+      </div>
     </>
   );
 }

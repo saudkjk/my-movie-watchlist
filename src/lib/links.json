@@ -1,9 +1,9 @@
 [
   { "path": "/", "name": "Home" },
-  { "path": "/trending", "name": "Trending Movies" },
-  { "path": "/toprated", "name": "Top Rated Movies" },
-  { "path": "/genre", "name": "Browse Movies" },
-  { "path": "/browse", "name": "Browse Watchlists" },
-  { "path": "/watchlist", "name": "Watchlist" },
-  { "path": "/completed", "name": "Completed" } 
+  { "path": "/trending", "name": "Trending" },
+  { "path": "/toprated", "name": "Top Rated" },
+  { "path": "/genre", "name": "Browse" },
+  { "path": "/browse", "name": "Popular Lists" },
+  { "path": "/watchlist", "name": "My Watchlist" },
+  { "path": "/completed", "name": "My Completed List" }
 ]

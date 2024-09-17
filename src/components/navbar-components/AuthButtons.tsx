@@ -1,4 +1,3 @@
-"use server";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 export default async function AuthButtons() {
   return (
@@ -9,7 +8,7 @@ export default async function AuthButtons() {
         </SignInButton>
       </SignedOut>
       <SignedIn>
-        <UserButton  />
+        <UserButton />
       </SignedIn>
     </>
   );

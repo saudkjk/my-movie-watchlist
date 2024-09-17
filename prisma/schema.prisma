@@ -13,40 +13,138 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Watchlist {
+// model Watchlist {
+//   id        String   @id @default(uuid())
+//   userId    String
+//   movieId   String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([userId, movieId])
+// }
+
+// model Completed {
+//   id        String   @id @default(uuid())
+//   userId    String
+//   movieId   String
+//   rating    String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@unique([userId, movieId])
+// }
+
+// model UserSettings {
+//   id                  String   @id @default(uuid())
+//   userId              String   @unique
+//   watchlistVisibility String
+//   createdAt           DateTime @default(now())
+//   updatedAt           DateTime @updatedAt
+// }
+
+// model Comments {
+//   id           String   @id @default(uuid())
+//   userId       String
+//   targetUserId String
+//   comment      String
+//   createdAt    DateTime @default(now())
+//   updatedAt    DateTime @updatedAt
+// }
+
+// model User {
+//   id        String   @id @default(uuid())
+//   email     String   @unique
+//   username  String
+//   password  String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   // Relationships
+//   customLists   CustomList[]
+//   completedList CompletedListItem[]
+//   // watchlist     WatchlistItem[]
+//   likes         Like[]
+//   comments      Comment[]
+// }
+
+model CustomList {
+  id          String   @id @default(uuid())
+  name        String
+  username    String
+  description String?
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relationships
+  userId String
+
+  // owner     User             @relation(fields: [userId], references: [id])
+  listItems CustomListItem[]
+  likes     Like[]
+  comments  Comment[]
+}
+
+model CustomListItem {
+  id          String   @id @default(uuid())
+  listId      String
+  movieId     String
+  moviePoster String
+  addedAt     DateTime @default(now())
+
+  // Relationships
+  list CustomList @relation(fields: [listId], references: [id])
+
+  @@unique([listId, movieId]) // A movie can only appear once in the same custom list
+}
+
+model CompletedListItem {
+  id      String   @id @default(uuid())
+  userId  String
+  movieId String
+  liked   Boolean? // User feedback for completed movies (optional)
+  addedAt DateTime @default(now())
+
+  // Relationships
+  // user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, movieId]) // A movie can only be marked completed once per user
+}
+
+model WatchlistItem {
+  id      String   @id @default(uuid())
+  userId  String
+  movieId String
+  addedAt DateTime @default(now())
+
+  // Relationships
+  // user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, movieId]) // A movie can only be in the watchlist once per user
+}
+
+model Like {
   id        String   @id @default(uuid())
-  userId    String
-  movieId   String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userId    String
+  listId    String
 
-  @@unique([userId, movieId])
+  // Relationships
+  // user User       @relation(fields: [userId], references: [id])
+  list CustomList @relation(fields: [listId], references: [id])
+
+  @@unique([userId, listId]) // A user can only like a custom list once
 }
 
-model Completed {
+model Comment {
   id        String   @id @default(uuid())
+  content   String
   userId    String
-  movieId   String
-  rating    String
+  username  String
+  listId    String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  @@unique([userId, movieId])
-}
-
-model UserSettings {
-  id                  String   @id @default(uuid())
-  userId              String   @unique
-  watchlistVisibility String
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-}
-
-model Comments {
-  id           String   @id @default(uuid())
-  userId       String
-  targetUserId String
-  comment      String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  // Relationships
+  // user User       @relation(fields: [userId], references: [id])
+  list CustomList @relation(fields: [listId], references: [id])
 }

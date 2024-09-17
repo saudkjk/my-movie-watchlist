@@ -1,73 +1,51 @@
 "use client";
-import { BsCheckCircle, BsPlusCircle } from "react-icons/bs";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { addToWatchlist, removeFromWatchlist } from "@/lib/actions/database";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useState } from "react";
 import { WatchlistButtonProps } from "@/lib/types/types";
 
 export function WatchlistButton({
-  currentUserId,
+  userId,
   movie,
+  inWatchlistButton,
+  notInWatchlistButton,
+  className,
 }: WatchlistButtonProps) {
   const { isSignedIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  const { openSignIn } = useClerk();
 
   const [inWatchlist, setInWatchlist] = useState(movie.inWatchlist);
+  const { openSignIn } = useClerk();
 
-  const handleUpdateWatchlist = async (action: string) => {
+  const handleToggleWatchlist = async () => {
     if (!isSignedIn) {
       openSignIn();
     } else {
-      setInWatchlist(!inWatchlist);
-
       try {
-        if (action === "add") {
-          await addToWatchlist(currentUserId, movie.id);
-        } else if (action === "remove") {
-          await removeFromWatchlist(currentUserId, movie.id);
-          if (pathname === "/watchlist") router.refresh();
+        if (inWatchlist) {
+          await removeFromWatchlist(userId, String(movie.id));
+        } else {
+          await addToWatchlist(userId, String(movie.id));
         }
-      } catch (error) {
-        console.error(`Failed to ${action} watchlist`, error);
+
         setInWatchlist(!inWatchlist);
+
+        // If user is on the watchlist page, refresh it after removal
+        if (pathname === "/watchlist") router.refresh();
+      } catch (error) {
+        console.error(
+          `Failed to ${inWatchlist ? "remove from" : "add to"} watchlist`,
+          error,
+        );
       }
     }
   };
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          onClick={() =>
-            inWatchlist
-              ? handleUpdateWatchlist("remove")
-              : handleUpdateWatchlist("add")
-          }
-          className="mr-1 inline-block cursor-pointer"
-          aria-label={
-            inWatchlist ? "Remove from watchlist" : "Add to watchlist"
-          }
-        >
-          {inWatchlist ? (
-            <BsCheckCircle className="text-2xl text-green-500 sm:text-3xl" />
-          ) : (
-            <BsPlusCircle className="text-2xl text-white sm:text-3xl" />
-          )}
-        </button>
-      </TooltipTrigger>
-      <TooltipContent
-        className={`transform translate-x-${inWatchlist ? "16" : "11"}`}
-      >
-        {inWatchlist ? <p>Remove from watchlist</p> : <p>Add to watchlist</p>}
-      </TooltipContent>
-    </Tooltip>
+    <div className={className} onClick={handleToggleWatchlist}>
+      {inWatchlist ? inWatchlistButton : notInWatchlistButton}
+    </div>
   );
 }

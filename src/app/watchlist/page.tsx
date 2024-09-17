@@ -1,32 +1,27 @@
-"use server";
-import { auth } from "@clerk/nextjs/server";
-import { getVisibility, getWatchlistMoviesIds } from "@/lib/actions/database";
-import { fetchMoviesByIds } from "@/lib/actions/API";
-import PageTitle from "@/components/PageTitle";
-import ChangeVisibilitySwitch from "@/components/ChangeVisibilitySwitch";
+import { getWatchlistMovies } from "@/lib/actions/database";
+import { fetchMoviesByIdsWithDbStatus } from "@/lib/actions/API";
 import DisplayMovies from "@/components/DisplayMovies";
+import { getUserInfo } from "@/lib/helpers";
 
-// this page is only accessible to logged in users protected by the clerk auth middleware
 export default async function Page() {
-  const currentUserId = (await auth().userId) || "";
+  const { userId, username } = await getUserInfo();
 
-  const watchlistMoviesIds = await getWatchlistMoviesIds(currentUserId);
-  const watchlistMovies = await fetchMoviesByIds(watchlistMoviesIds);
-  const watchlistVisibility = await getVisibility(currentUserId!);
+  const watchlistMoviesIds = await getWatchlistMovies(userId);
+  const movieIdsArray = watchlistMoviesIds.movieIds;
+
+  const watchlistMovies = await fetchMoviesByIdsWithDbStatus(
+    movieIdsArray,
+    userId,
+  );
 
   return (
-    <>
-      <div className="flex justify-between">
-        <PageTitle title="Watchlist" />
-        <ChangeVisibilitySwitch
-          userId={currentUserId}
-          watchListVisibility={watchlistVisibility.isPublic}
-        />
-      </div>
+    <div className="mx-[4%] mb-[15px] md:mx-[8%]">
+      <h2 className="mb-[20px] text-2xl font-semibold">Watchlist</h2>
       <DisplayMovies
         movies={watchlistMovies.reverse()}
-        currentUserId={currentUserId}
+        userId={userId}
+        username={username}
       />
-    </>
+    </div>
   );
 }

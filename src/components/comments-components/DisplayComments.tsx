@@ -1,74 +1,42 @@
-"use server";
-import Image from "next/image";
-import { getUserWatchlistComments } from "@/lib/actions/database";
-import { CommentsProps, User, Comment, UserComment } from "@/lib/types/types";
-// import DeleteComment from "@/components/comments-components/DeleteComment";
-import PageTitle from "../PageTitle";
+import { CommentsProps } from "@/lib/types/types";
+import DeleteComment from "./DeleteComment";
 
 export default async function DisplayComments({
-  currentWatchlistUserId,
-  usersList,
-  currentUserId,
+  comments,
+  userId,
 }: CommentsProps) {
-  // get current watchlist comments
-  const currentWatchlistComments =
-    (await getUserWatchlistComments(currentWatchlistUserId)).data || [];
-
-  // get users information from usersList
-  const users = usersList.map((user: User) => ({
-    username: user.username,
-    imageUrl: user.imageUrl,
-    id: user.id,
-  }));
-
-  // group comments by user
-  const userComments = currentWatchlistComments.reduce(
-    (acc: UserComment[], comment: Comment) => {
-      const user = users.find((user: User) => user.id === comment.userId);
-      if (user) {
-        acc.push({ user, comment });
-      } else {
-        console.error(`No user found for comment with ID: ${comment.id}`);
-      }
-      return acc;
-    },
-    [],
-  );
-
   return (
-    <div className="mx-auto my-4 mt-7 flex max-w-[600px] flex-col gap-4 md:mx-20 md:max-w-[100%]">
-      <div className="text-lg font-semibold">Comments:</div>
-      {userComments?.map(({ user, comment }) => (
-        <div
-          key={comment.id}
-          className="flex justify-between rounded-lg border p-4 shadow-sm"
-        >
-          <div>
-            <div className="mb-2 flex items-center gap-4">
-              {user.imageUrl && user.username && (
-                <Image
-                  src={user.imageUrl}
-                  alt={user.username}
-                  width={30}
-                  height={30}
-                  className="rounded-full"
-                />
-              )}
+    <div className="mx-[4%] mt-[50px] flex justify-center md:mx-[8%]">
+      <div className="mb-[30px] flex w-full flex-col gap-4 md:max-w-[700px] lg:max-w-[60vw]">
+        <div className="text-lg font-semibold">Comments:</div>
+        {comments.length === 0 ? (
+          <div className="font-medium">No comments yet</div>
+        ) : (
+          comments.map((comment) => (
+            <div
+              key={comment.id}
+              className="flex justify-between rounded-lg border p-4 shadow-sm"
+            >
               <div>
-                <div className="text-md font-semibold">{user.username}</div>
-                <div className="text-sm text-gray-500">
-                  {new Date(comment.createdAt).toLocaleString()}
+                <div className="mb-2 flex items-center gap-4">
+                  <div>
+                    <div className="text-md font-semibold">
+                      {comment.username}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      {new Date(comment.createdAt).toLocaleString()}
+                    </div>
+                  </div>
                 </div>
+                {comment.content}
               </div>
+              {userId === comment.userId && (
+                <DeleteComment commentId={comment.id} userId={userId} />
+              )}
             </div>
-            {comment.comment}
-          </div>
-          {
-            currentUserId === comment.userId && <div></div>
-            // <DeleteComment commentId={comment.id} />
-          }
-        </div>
-      ))}
+          ))
+        )}
+      </div>
     </div>
   );
 }

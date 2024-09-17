@@ -3,8 +3,8 @@ import "@/app/globals.css";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { ThemeProvider } from "@/app/ThemeProvider";
-import Navbar from "@/components/Navbar";
+import ScrollListener from "@/components/navbar-components/ScrollListener";
+import NavBar from "@/components/navbar-components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -28,15 +28,12 @@ export default function RootLayout({
     >
       <html lang="en">
         <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            <main className="container mx-auto">{children}</main>
-          </ThemeProvider>
+          <main>
+            <ScrollListener>
+              <NavBar />
+            </ScrollListener>
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>

@@ -1,61 +1,113 @@
 "use client";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { CommentFormProps } from "@/lib/types/types";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import { useActionState, useRef } from "react";
-import { addComment } from "@/lib/actions/database";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { addComment } from "@/lib/actions/database";
+
+const commentSchema = z.object({
+  comment: z.string().trim().min(1, { message: "Comment cannot be empty" }),
+});
+
+type CommentFormSchema = z.infer<typeof commentSchema>;
 
 export default function CommentSection({
   username,
-  targetUserId,
-  currentUserId,
+  listid,
+  userId,
 }: CommentFormProps) {
   const { isSignedIn } = useUser();
-  const ref = useRef<HTMLFormElement>(null);
+  const [isPending, setIsPending] = useState(false);
 
-  const boundAddComment = addComment.bind(null, currentUserId, targetUserId);
-  // const [state, formAction, isPending] = useActionState(boundAddComment, null);
+  const form = useForm<CommentFormSchema>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      comment: "",
+    },
+  });
+
+  const onSubmit = async (data: CommentFormSchema) => {
+    setIsPending(true);
+    try {
+      const response = await addComment(userId, listid, username, data.comment);
+      if (response.status === 200) {
+        form.reset();
+      } else {
+        console.error("Failed to add comment:", response.message);
+      }
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+    } finally {
+      setIsPending(false);
+    }
+  };
 
   return (
-    <div className="mx-auto mt-7 grid max-w-[600px] gap-2 md:mx-20 md:max-w-[100%]">
-      <div className="text-lg font-semibold">
-        Comment on watchlist or suggest movies to{" "}
-        <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-clip-text font-bold text-transparent">
-          {username}
-        </span>
+    <div className="mx-[4%] mt-[50px] flex justify-center md:mx-[8%]">
+      <div className="flex w-full flex-col md:max-w-[700px] lg:max-w-[60vw]">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="comment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    <div className="text-lg font-semibold">
+                      Comment on{" "}
+                      <span className="font-bold">{username}`s </span>
+                      list
+                    </div>
+                  </FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Type your comment here."
+                      disabled={!isSignedIn || isPending}
+                      {...field}
+                    />
+                  </FormControl>
+                  <div className="min-h-[10px]">
+                    <FormMessage className="h-[10px]" />
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            {isSignedIn ? (
+              <div className="flex justify-end">
+                <Button
+                  className="bg-secondary-color hover:bg-secondary-color-dark active:bg-secondary-color-darkest"
+                  type="submit"
+                  disabled={isPending}
+                >
+                  {isPending ? "Submitting..." : "Comment"}
+                </Button>
+              </div>
+            ) : (
+              <SignInButton
+                fallbackRedirectUrl={`/browse/${username}`}
+                mode="modal"
+              >
+                <div className="my-2 cursor-pointer gap-2 font-semibold text-red-500 hover:text-blue-600">
+                  Login to comment
+                </div>
+              </SignInButton>
+            )}
+          </form>
+        </Form>
       </div>
-
-      <p className="text-sm text-muted-foreground">
-        Your comment is public and will be viewable by everyone
-      </p>
-
-      {/* <form action={formAction} ref={ref}> */}
-      <form ref={ref}>
-        <Textarea
-          name="comment"
-          placeholder="Type your comment here."
-          disabled={!isSignedIn}
-          required
-        />
-
-        {isSignedIn ? (
-          <div className="mt-2 flex justify-end gap-2">
-            {/* <Button type="submit" disabled={isPending}>
-              {isPending ? "Submitting..." : "Comment"}
-            </Button> */}
-          </div>
-        ) : (
-          <SignInButton
-            fallbackRedirectUrl={`/browse/${username}`}
-            mode="modal"
-          >
-            <div className="my-2 cursor-pointer gap-2 font-semibold text-red-500 hover:text-blue-600">
-              Login to comment
-            </div>
-          </SignInButton>
-        )}
-      </form>
     </div>
   );
 }

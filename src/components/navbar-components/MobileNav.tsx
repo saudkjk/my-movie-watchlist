@@ -1,5 +1,3 @@
-"use server";
-import { IoMenuSharp } from "react-icons/io5";
 import {
   Sheet,
   SheetClose,
@@ -7,20 +5,26 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import links from "@/lib/links.json";
-import DarkModeSwitch from "../DarkModeSwitch";
+
+import AuthButtons from "./AuthButtons";
 
 export default async function MobileNav({ className }: { className?: string }) {
   return (
-    <div className={`flex justify-start ${className}`}>
+    <div className={`flex h-12 justify-start ${className}`}>
       <Sheet>
         <SheetTrigger asChild>
           <button aria-label="Open navigation">
-            <IoMenuSharp className="text-3xl" />
+            <img
+              loading="lazy"
+              src={`https://cdn.builder.io/api/v1/image/assets/TEMP/c978a17026e05e5d67d00e99efc056308202b42f22b31eea4597114395051c6b?placeholderIfAbsent=true&apiKey=${process.env.NEXT_PUBLIC_IMAGE_KEY}`}
+              alt="Menu icon"
+              className="h-auto w-[30px] object-contain"
+            />
           </button>
         </SheetTrigger>
         <SheetContent
-          side="left"
-          className="flex w-[230px] flex-col gap-2 text-center"
+          side="right"
+          className="flex w-[230px] flex-col gap-2 border-[#312F2F] bg-[#312F2F] text-center"
         >
           {links.map((link) => (
             <SheetClose asChild key={link.path}>
@@ -32,7 +36,9 @@ export default async function MobileNav({ className }: { className?: string }) {
               </a>
             </SheetClose>
           ))}
-          <DarkModeSwitch />
+          <div className="max-w-[90%]">
+            <AuthButtons />
+          </div>
         </SheetContent>
       </Sheet>
     </div>
